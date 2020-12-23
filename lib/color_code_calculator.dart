@@ -37,7 +37,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-          child: Center(
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -169,6 +169,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
               ),
             ),
             CircleColorPicker(
+              strokeWidth: 5,
               onChanged: (Color color) {
                 if (selected1 == true) {
                   setState(() {
@@ -189,16 +190,64 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
                 fontSize: 30.0,
               ),
               colorCodeBuilder: (context, color) {
-                //using the color converter library/dependency to get the name of the color
-                //convert its value to hex first
-                return TextField(
-                  
-                  autocorrect: true,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: convert.hex
-                        .keyword(color.value.toRadixString(16))
-                        .toString(),
+                var _controller = TextEditingController();
+
+                return Dialog(
+                  elevation: 3.0,
+                  backgroundColor: Colors.blueGrey,
+                  insetPadding: EdgeInsets.symmetric(horizontal: 65),
+                  child: TextField(
+                    controller: _controller,
+                    cursorHeight: 26,
+                    cursorColor: color,
+                    textAlign: TextAlign.center,
+                    autocorrect: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: convert.hex
+                          .keyword(color.value.toRadixString(16))
+                          .toString(),
+                    ),
+                    onSubmitted: (colorNameTyped) {
+                      //using the color converter library/dependency to get the name of the color
+                      //convert its value to hex first
+
+                      List colorRGBValue() {
+                        try {
+                          return convert.keyword
+                              .rgb(colorNameTyped.toLowerCase());
+                        } catch (error) {
+                          print(error);
+                        }
+                      }
+
+                      var colorName = colorRGBValue();
+                      //convert it to the accepted ARGB format for colors
+                      Color bandcolorSelected = Color.fromARGB(
+                          255, colorName[0], colorName[1], colorName[2]);
+
+                      //chandge the color of the selcted band according to the color input
+                      if (selected1 == true) {
+                        setState(() {
+                          bandColor1 = bandcolorSelected;
+                          _controller.clear(); //clears the textfield
+                        });
+                      } else if (selected2 == true) {
+                        setState(() {
+                          bandColor2 = bandcolorSelected;
+                          _controller.clear();
+                        });
+                      } else if (selected3 == true) {
+                        setState(() {
+                          bandColor3 = bandcolorSelected;
+                          _controller.clear();
+                        });
+                      } else {
+                        print('Select a band');
+                        _controller.clear();
+                      }
+                     
+                    },
                   ),
                 );
               },
