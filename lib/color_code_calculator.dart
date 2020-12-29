@@ -1,7 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:color/color.dart' as color;
 
+import 'constants.dart';
 import 'package:color_convert/color_convert.dart';
 import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 
@@ -11,13 +10,13 @@ class ColorCodeCalculator extends StatefulWidget {
 }
 
 class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
-  Color bandColor1 = Color(0xffff0000);
-  Color bandColor2 = Color.fromARGB(255, 0, 128, 0);
-  Color bandColor3 = Color.fromARGB(255, 0, 0, 255);
-  Color bandColor4 = Color.fromARGB(255, 0, 0, 255);
-  Color bandColor5 = Color.fromARGB(255, 0, 0, 255);
-  Color bandColor6 = Color.fromARGB(255, 0, 0, 255);
-  int totalBands = 4;
+  Color bandColor1 = Colors.yellow;
+  Color bandColor2 = Color.fromARGB(255, 0, 0, 255);
+  Color bandColor3 = Color.fromARGB(255, 255, 0, 0);
+  Color bandColor4 = Color.fromARGB(255, 0, 0, 0);
+  Color bandColor5 = Colors.green;
+  Color bandColor6 = Colors.brown;
+  int totalBands = 5;
 
   Color testBandColor1 = Colors.orange;
   Color testBandColor2 = Colors.yellow;
@@ -82,15 +81,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 10,
-                    width: 70,
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10))),
-                  ),
+                  kresistorEndWire(2),
                   Stack(
                     alignment: Alignment.centerLeft,
                     children: [
@@ -115,13 +106,8 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
                               width:
                                   40, //same as the container above it, reduced because of spaeceBetween
                             ),
-                            (totalBands == 4)
-                                ? ResistorBandGestureDetctr(
-                                    selected1: selected1,
-                                    selected2: selected2,
-                                    selected3: selected3,
-                                    bandColor: bandColor1,
-                                    onTapR: () {
+                             GestureDetector(
+                                    onTap: () {
                                       setState(() {
                                         selected1 = !selected1;
                                         selected2 = selected3 =
@@ -129,68 +115,59 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
                                       });
                                       print('selected 1 is $selected1');
                                     },
-                                  )
-                                : null,
-                            (totalBands == 4)
+                                    child: buildBandContainer(bandColor1),
+                                  ),
+                                
+                            (totalBands == 6)
                                 ? GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        selected1 = !selected1;
-                                        selected2 = false;
-                                        selected3 = false;
+                                        selected2 = !selected2;
+                                        selected3 = selected4 =
+                                            selected5 = selected6 = false;
                                       });
 
-                                      print(selected1);
-                                      print('selected1');
-                                      // colorChange();
+                                      print('selected 2 is $selected2');
+                                      ;
                                     },
                                     child: buildBandContainer(bandColor2),
                                   )
-                                : null,
-                            (totalBands == 4)
+                                : SizedBox.shrink(),
+                            (totalBands == 6|5)
                                 ? GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        selected1 = !selected1;
-                                        selected2 = false;
-                                        selected3 = false;
+                                        selected3 = !selected3;
+                                        selected1 = selected2 = selected4 =
+                                            selected5 = selected6 = false;
                                       });
 
-                                      print(selected1);
-                                      print('selected1');
-                                      // colorChange();
+                                      print('selected 3 is $selected3');
                                     },
-                                    child:buildBandContainer(bandColor3)
-                                  )
+                                    child: buildBandContainer(bandColor3))
                                 : SizedBox.shrink(),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selected1 = !selected1;
-                                  selected2 = false;
-                                  selected3 = false;
-                                });
+                           (totalBands == 6)
+                                ? GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selected4 = !selected4;
+                                    selected1 = selected2 = selected3 =
+                                        selected5 = selected6 = false;
+                                  });
 
-                                print(selected1);
-                                print('selected1');
-                                // colorChange();
-                              },
-                              child:buildBandContainer(bandColor4)
-                            ),
+                                  print('selected 4 is $selected4');
+                                },
+                                child: buildBandContainer(bandColor4)): SizedBox.shrink(),
                             GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selected2 = !selected2;
-                                  selected1 = false;
-                                  selected3 = false;
-                                });
-                                print('selected2');
-                                print(selected2);
-
-                                // colorChange();
-                              },
-                              child: buildBandContainer(bandColor5)
-                            ),
+                                onTap: () {
+                                  setState(() {
+                                    selected5 = !selected5;
+                                    selected1 = selected2 = selected3 =
+                                        selected4 = selected6 = false;
+                                  });
+                                  print('selected 5 is $selected5');
+                                },
+                                child: buildBandContainer(bandColor5)),
                             SizedBox(
                               width:
                                   9, //the tolerance is further away from the other values
@@ -198,14 +175,11 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selected3 = !selected3;
-                                  selected1 = false;
-                                  selected2 = false;
+                                  selected6 = !selected6;
+                                  selected1 = selected2 =
+                                      selected3 = selected4 = selected5 = false;
                                 });
-                                print('selected3');
-                                print(selected3);
-
-                                // colorChange();
+                                print('selected 6 is $selected6');
                               },
                               child: buildBandContainer(bandColor6),
                             ),
@@ -227,35 +201,13 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
                       ),
                     ],
                   ),
-                  Container(
-                    height: 10,
-                    width: 70,
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            bottomRight: Radius.circular(10))),
-                  ),
+                  kresistorEndWire(1),
                 ],
               ),
             ),
             CircleColorPicker(
               strokeWidth: 5,
-              onChanged: (Color color) {
-                if (selected1 == true) {
-                  setState(() {
-                    bandColor1 = color;
-                  });
-                } else if (selected2 == true) {
-                  setState(() {
-                    bandColor2 = color;
-                  });
-                } else if (selected3 == true) {
-                  setState(() {
-                    bandColor3 = color;
-                  });
-                }
-              },
+              onChanged: bandColorChange,
               textStyle: TextStyle(
                 color: bandColor1,
                 fontSize: 30.0,
@@ -263,32 +215,24 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
               colorCodeBuilder: (context, color) {
                 var _controller = TextEditingController();
 
-                return Dialog(
-                  elevation: 3.0,
-                  backgroundColor: Colors.blueGrey,
-                  insetPadding: EdgeInsets.symmetric(horizontal: 65),
-                  child: TextField(
+                return buildDialog(
                     controller: _controller,
-                    cursorHeight: 26,
-                    cursorColor: color,
-                    textAlign: TextAlign.center,
-                    autocorrect: true,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: convert.hex
-                          .keyword(color.value.toRadixString(16))
-                          .toString(),
-                    ),
-                    onSubmitted: (colorNameTyped) {
+                    color: color,
+                    onSubmit: (colorNameTyped) {
                       //using the color converter library/dependency to get the name of the color
                       //convert its value to hex first
-
                       List colorRGBValue() {
-                        try {
-                          return convert.keyword
-                              .rgb(colorNameTyped.toLowerCase());
-                        } catch (error) {
-                          print(error);
+                        var converted =
+                            convert.keyword.rgb(colorNameTyped.toLowerCase());
+                        //check if the color exists in the list
+                        //if it doesnt exist the method returns null.
+                        if ((converted.toString()) != null.toString()) {
+                          print('no error');
+                          _controller.clear(); //clears the textfield
+                          return converted;
+                        } else {
+                          print('error');
+                          _controller.clear();
                         }
                       }
 
@@ -298,28 +242,8 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
                           255, colorName[0], colorName[1], colorName[2]);
 
                       //chandge the color of the selcted band according to the color input
-                      if (selected1 == true) {
-                        setState(() {
-                          bandColor1 = bandcolorSelected;
-                          _controller.clear(); //clears the textfield
-                        });
-                      } else if (selected2 == true) {
-                        setState(() {
-                          bandColor2 = bandcolorSelected;
-                          _controller.clear();
-                        });
-                      } else if (selected3 == true) {
-                        setState(() {
-                          bandColor3 = bandcolorSelected;
-                          _controller.clear();
-                        });
-                      } else {
-                        print('Select a band');
-                        _controller.clear();
-                      }
-                    },
-                  ),
-                );
+                      bandColorChange(bandcolorSelected);
+                    });
               },
             ),
             FlatButton(
@@ -337,11 +261,32 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
     );
   }
 
-  Container buildBandContainer(Color bandColor) {
-    return Container(
-      color: bandColor,
-      width: 10,
-    );
+  void bandColorChange(Color color) {
+    if (selected1 == true) {
+      setState(() {
+        bandColor1 = color;
+      });
+    } else if (selected2 == true) {
+      setState(() {
+        bandColor2 = color;
+      });
+    } else if (selected3 == true) {
+      setState(() {
+        bandColor3 = color;
+      });
+    } else if (selected4 == true) {
+      setState(() {
+        bandColor4 = color;
+      });
+    } else if (selected5 == true) {
+      setState(() {
+        bandColor5 = color;
+      });
+    } else if (selected6 == true) {
+      setState(() {
+        bandColor6 = color;
+      });
+    }
   }
 }
 
@@ -426,55 +371,3 @@ class _ResistorBandState extends State<ResistorBand> {
     );
   }
 }
-
-// class ClockPainter extends CustomPainter {
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     var centerX = size.width / 2;
-//     var centery = size.height / 2;
-//     var center = Offset(centerX, centery);
-//     var radius = min(centerX, centery);
-
-//     var fillBrush = Paint()..color = Colors.red;
-//     var outlineBrush = Paint()
-//       ..strokeWidth = 16
-//       ..style = PaintingStyle.stroke
-//       ..color = Colors.white;
-
-//     var centerfillBrush = Paint()..color = Colors.white;
-
-//     var secondHandBrush = Paint()
-//       ..strokeCap = StrokeCap.round
-//       ..strokeWidth = 16
-//       ..style = PaintingStyle.stroke
-//       ..color = Colors.orange[300];
-
-//     var minHandBrush = Paint()
-//       ..shader = RadialGradient(colors: [Colors.lightBlue, Colors.pink])
-//           .createShader(Rect.fromCircle(center: center, radius: radius))
-//       ..strokeWidth = 16
-//       ..strokeCap = StrokeCap.round
-//       ..style = PaintingStyle.stroke
-//       ..color = Colors.orange[300];
-
-//     var hourHandBrush = Paint()
-//       ..shader = RadialGradient(colors: [Colors.lightBlue, Colors.pink])
-//           .createShader(Rect.fromCircle(center: center, radius: radius))
-//       ..strokeWidth = 16
-//       ..strokeCap = StrokeCap.round
-//       ..style = PaintingStyle.stroke
-//       ..color = Colors.orange[300];
-
-//     canvas.drawCircle(center, radius - 20, fillBrush);
-//     canvas.drawCircle(center, radius - 20, outlineBrush);
-//     canvas.drawLine(center, Offset(100, 100), secondHandBrush);
-//     canvas.drawLine(center, Offset(150, 100), minHandBrush);
-//     canvas.drawLine(center, Offset(200, 150), hourHandBrush);
-//     canvas.drawCircle(center, 14, centerfillBrush);
-//   }
-
-//   @override
-//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-//     return true;
-//   }
-// }
