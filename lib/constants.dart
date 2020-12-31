@@ -24,6 +24,9 @@ Container buildBandContainer(Color bandColor) {
     width: 10,
   );
 }
+FadeTransition buildFadeTransition(Color bandColor, Animation<double> opacity) {
+ return FadeTransition(opacity: opacity, child: buildBandContainer(bandColor));
+}
 
 Dialog buildDialog(
     {TextEditingController controller, Color color, Function onSubmit}) {
@@ -82,3 +85,5 @@ DropdownButton<int> androidDropdown({int totalBands, Function onChange}) {
 //       children: pickerItems,
 //     );
 //   }
+
+

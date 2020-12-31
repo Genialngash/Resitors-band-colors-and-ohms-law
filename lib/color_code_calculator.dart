@@ -9,7 +9,8 @@ class ColorCodeCalculator extends StatefulWidget {
   _ColorCodeCalculatorState createState() => _ColorCodeCalculatorState();
 }
 
-class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
+class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
+    with TickerProviderStateMixin {
   Color bandColor1 = Colors.yellow;
   Color bandColor2 = Color.fromARGB(255, 0, 0, 255);
   Color bandColor3 = Color.fromARGB(255, 255, 0, 0);
@@ -67,8 +68,29 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
   //     print('not a color');
   //   }
   // }
+  AnimationController _animationController;
+  Animation<double> _animation;
 
-  
+  void bandAnimation() {
+    _animationController = AnimationController(
+      duration: const Duration(
+        milliseconds: 900,
+      ),
+      vsync: this,
+      value: 0,
+      lowerBound: 0.35,
+      upperBound: 1,
+    );
+    _animation = CurvedAnimation(
+        parent: _animationController, curve: Curves.easeInOutBack);
+    _animationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   void matchColorToResistorValue(Color bandColor) {
     //  ff03040E
@@ -108,14 +130,14 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             androidDropdown(
-                    totalBands: totalBands,
-                    onChange: (int newValue) {
-                      setState(() {
-                        totalBands = newValue;
-                      });
-                    },
-                  ),       
+            androidDropdown(
+              totalBands: totalBands,
+              onChange: (int newValue) {
+                setState(() {
+                  totalBands = newValue;
+                });
+              },
+            ),
             FittedBox(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -145,30 +167,39 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
                               width:
                                   40, //same as the container above it, reduced because of spaeceBetween
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selected1 = !selected1;
-                                  selected2 =
-                                      selected3 = selected4 = selected5 = false;
-                                });
-                                print('selected 1 is $selected1');
-                              },
-                              child: buildBandContainer(bandColor1),
-                            ),
+                            InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    selected1 = true;
+                                    selected2 = selected3 =
+                                        selected4 = selected5 = false;
+                                  });
+
+                                  bandAnimation();
+                                  print('selected 1 is $selected1');
+                                },
+                                //if the band is selected ,show an animation.
+                                child: selected1
+                                    ? buildFadeTransition(
+                                        bandColor1, _animation)
+                                    : buildBandContainer(bandColor1)),
+
                             //check the n.o bands selected.
                             (totalBands == 6 || totalBands == 5)
                                 ? GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        selected2 = !selected2;
-                                        selected3 = selected4 =
+                                        selected2 = true;
+                                        selected1 = selected3 = selected4 =
                                             selected5 = selected6 = false;
                                       });
 
                                       print('selected 2 is $selected2');
                                     },
-                                    child: buildBandContainer(bandColor2),
+                                    child: selected2
+                                        ? buildFadeTransition(
+                                            bandColor2, _animation)
+                                        : buildBandContainer(bandColor2),
                                   )
                                 : SizedBox.shrink(),
                             (totalBands == 4) ||
@@ -177,37 +208,46 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
                                 ? GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        selected3 = !selected3;
+                                        selected3 = true;
                                         selected1 = selected2 = selected4 =
                                             selected5 = selected6 = false;
                                       });
 
                                       print('selected 3 is $selected3');
                                     },
-                                    child: buildBandContainer(bandColor3))
+                                    child: selected3
+                                        ? buildFadeTransition(
+                                            bandColor3, _animation)
+                                        : buildBandContainer(bandColor3))
                                 : SizedBox.shrink(),
                             GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    selected4 = !selected4;
+                                    selected4 = true;
                                     selected1 = selected2 = selected3 =
                                         selected5 = selected6 = false;
                                   });
                                   print('selected 4 is $selected4');
                                 },
-                                child: buildBandContainer(bandColor4)),
+                                child: selected4
+                                    ? buildFadeTransition(
+                                        bandColor4, _animation)
+                                    : buildBandContainer(bandColor4)),
                             (totalBands == 6)
                                 ? GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        selected5 = !selected5;
+                                        selected5 = true;
                                         selected1 = selected2 = selected3 =
                                             selected4 = selected6 = false;
                                       });
 
                                       print('selected 5 is $selected5');
                                     },
-                                    child: buildBandContainer(bandColor5))
+                                    child: selected5
+                                        ? buildFadeTransition(
+                                            bandColor5, _animation)
+                                        : buildBandContainer(bandColor5))
                                 : SizedBox.shrink(),
                             SizedBox(
                               width:
@@ -216,13 +256,15 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selected6 = !selected6;
+                                  selected6 = true;
                                   selected1 = selected2 =
                                       selected3 = selected4 = selected5 = false;
                                 });
                                 print('selected 6 is $selected6');
                               },
-                              child: buildBandContainer(bandColor6),
+                              child: selected6
+                                  ? buildFadeTransition(bandColor6, _animation)
+                                  : buildBandContainer(bandColor6),
                             ),
                           ],
                         ),
@@ -330,39 +372,6 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator> {
         bandColor6 = color;
       });
     }
-  }
-}
-
-class ResistorBandGestureDetctr extends StatelessWidget {
-  ResistorBandGestureDetctr(
-      {Key key,
-      @required this.selected1,
-      @required this.selected2,
-      @required this.selected3,
-      @required this.bandColor,
-      @required this.onTapR})
-      : super(key: key);
-
-  bool selected1;
-  bool selected2;
-  bool selected3;
-  Color bandColor;
-  Function onTapR;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTapR,
-
-      //   print(selected1);
-      //   print('selected1');
-      //   // colorChange();
-      // ,
-      child: Container(
-        color: bandColor,
-        width: 10,
-      ),
-    );
   }
 }
 
