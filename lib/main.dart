@@ -34,8 +34,14 @@ class _HomePageState extends State<HomePage> {
         title: Text('RESIST'),
       ),
       body: Container(
+        //margin: EdgeInsets.all(20),
         alignment: Alignment.center,
-        color: Colors.blueGrey,
+       // color: Colors.blueGrey,
+       decoration: BoxDecoration(
+       gradient: LinearGradient(
+         colors: [Color(0xff6B79A3),Color(0xff20355A)],
+       )
+       ),
         child: ColorCodeCalculator(),
       ),
     );

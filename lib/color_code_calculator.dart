@@ -70,20 +70,21 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   // }
   AnimationController _animationController;
   Animation<double> _animation;
-
-  void bandAnimation() {
+  @override
+  void initState() {
     _animationController = AnimationController(
       duration: const Duration(
         milliseconds: 900,
       ),
       vsync: this,
-      value: 0,
+      value: 0.1,
       lowerBound: 0.35,
       upperBound: 1,
     );
     _animation = CurvedAnimation(
         parent: _animationController, curve: Curves.easeInOutBack);
     _animationController.repeat(reverse: true);
+    super.initState();
   }
 
   @override
@@ -126,6 +127,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: EdgeInsets.all(20),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -175,7 +177,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                                         selected4 = selected5 = false;
                                   });
 
-                                  bandAnimation();
+                                 
                                   print('selected 1 is $selected1');
                                 },
                                 //if the band is selected ,show an animation.
@@ -227,6 +229,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                                     selected1 = selected2 = selected3 =
                                         selected5 = selected6 = false;
                                   });
+                                  
                                   print('selected 4 is $selected4');
                                 },
                                 child: selected4
@@ -290,11 +293,10 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
             ),
             CircleColorPicker(
               strokeWidth: 5,
+              thumbSize: 30,
+            //  size: Size(270, 270),
               onChanged: bandColorChange,
-              textStyle: TextStyle(
-                color: bandColor1,
-                fontSize: 30.0,
-              ),
+                            
               colorCodeBuilder: (context, color) {
                 var _controller = TextEditingController();
                 return buildDialog(
@@ -309,11 +311,14 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                         //check if the color exists in the list
                         //if it doesnt exist the method returns null.
                         if ((converted.toString()) != null.toString()) {
-                          print('no error');
+            
                           _controller.clear(); //clears the textfield
                           return converted;
                         } else {
                           print('error');
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text('Wrong color name'),behavior: SnackBarBehavior.floating,));
+                          
                           _controller.clear();
                         }
                       }
