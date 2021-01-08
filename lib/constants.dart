@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:color_convert/color_convert.dart';
@@ -24,17 +26,19 @@ Container buildBandContainer(Color bandColor) {
     width: 10,
   );
 }
+
 FadeTransition buildFadeTransition(Color bandColor, Animation<double> opacity) {
- return FadeTransition(opacity: opacity, child: buildBandContainer(bandColor));
+  return FadeTransition(opacity: opacity, child: buildBandContainer(bandColor));
 }
 
 Dialog buildDialog(
     {TextEditingController controller, Color color, Function onSubmit}) {
   return Dialog(
     elevation: 3.0,
-    backgroundColor: Colors.blueGrey,
+    backgroundColor: Color(0xff3C444E),
     insetPadding: EdgeInsets.symmetric(horizontal: 65),
     child: TextField(
+        style: TextStyle(color: Colors.white),
         controller: controller,
         cursorHeight: 26,
         cursorColor: color,
@@ -46,6 +50,54 @@ Dialog buildDialog(
               convert.hex.keyword(color.value.toRadixString(16)).toString(),
         ),
         onSubmitted: onSubmit),
+  );
+}
+
+Container buildColorNameTextField(
+    TextEditingController _controller, Color color, BuildContext context) {
+  return Container(
+    child: TextField(
+        style: TextStyle(color: Colors.black),
+        controller: _controller,
+        cursorHeight: 26,
+        cursorColor: color,
+        textAlign: TextAlign.center,
+        autocorrect: true,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText:
+              convert.hex.keyword(color.value.toRadixString(16)).toString(),
+        ),
+        onSubmitted: (colorNameTyped) async {
+          //using the color converter library/dependency to get the name of the color
+          //convert its value to hex first
+          List colorRGBValue() {
+            var converted = convert.keyword.rgb(colorNameTyped.toLowerCase());
+            //check if the color exists in the list
+            //if it doesnt exist the method returns null.
+            if ((converted.toString()) != null.toString()) {
+              _controller.clear(); //clears the textfield
+              context.runtimeType;
+              return converted;
+            } else {
+              print('error');
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text('Wrong color name'),
+                behavior: SnackBarBehavior.floating,
+              ));
+
+              _controller.clear();
+            }
+          }
+
+          var colorName = colorRGBValue();
+          //convert it to the accepted ARGB format for colors
+          Color bandcolorSelected =
+              Color.fromARGB(255, colorName[0], colorName[1], colorName[2]);
+
+          //change the color of the selected band according to the color input
+          //  await bandColorChange(bandcolorSelected);
+        }),
   );
 }
 
@@ -70,7 +122,10 @@ DropdownButton<int> androidDropdown({int totalBands, Function onChange}) {
   ];
 
   return DropdownButton<int>(
-      value: totalBands, items: dropDownMenuItems, onChanged: onChange);
+    value: totalBands,
+    items: dropDownMenuItems,
+    onChanged: onChange,
+  );
 }
 
 // CupertinoPicker iOSPicker() {
@@ -85,5 +140,3 @@ DropdownButton<int> androidDropdown({int totalBands, Function onChange}) {
 //       children: pickerItems,
 //     );
 //   }
-
-
