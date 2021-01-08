@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
+import 'package:resistohms/color_picker.dart';
+//import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+//import 'package:resistohms/cricin_colorPicker.dart';
 import 'constants.dart';
 import 'package:color_convert/color_convert.dart';
-import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
+
+//import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 
 class ColorCodeCalculator extends StatefulWidget {
   @override
@@ -38,6 +43,8 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   bool selected5 = false;
   bool selected6 = false;
 
+  TextEditingController _controller = TextEditingController();
+
   // void matchColorToResistorValue(Color bandColor) {
   //   //  ff03040E
   //   if (bandColor.value <= 4278387726) {
@@ -68,6 +75,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   //     print('not a color');
   //   }
   // }
+
   AnimationController _animationController;
   Animation<double> _animation;
   @override
@@ -126,6 +134,9 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(20),
       child: Center(
@@ -173,11 +184,10 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                                 onTap: () {
                                   setState(() {
                                     selected1 = true;
-                                    selected2 = selected3 =
-                                        selected4 = selected5 = false;
+                                    selected2 = selected3 = selected4 =
+                                        selected5 = selected6 = false;
                                   });
 
-                                 
                                   print('selected 1 is $selected1');
                                 },
                                 //if the band is selected ,show an animation.
@@ -229,7 +239,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                                     selected1 = selected2 = selected3 =
                                         selected5 = selected6 = false;
                                   });
-                                  
+
                                   print('selected 4 is $selected4');
                                 },
                                 child: selected4
@@ -291,48 +301,48 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                 ],
               ),
             ),
+            
             CircleColorPicker(
               strokeWidth: 5,
-              thumbSize: 30,
-            //  size: Size(270, 270),
               onChanged: bandColorChange,
-                            
-              colorCodeBuilder: (context, color) {
-                var _controller = TextEditingController();
-                return buildDialog(
-                    controller: _controller,
-                    color: color,
-                    onSubmit: (colorNameTyped) {
-                      //using the color converter library/dependency to get the name of the color
-                      //convert its value to hex first
-                      List colorRGBValue() {
-                        var converted =
-                            convert.keyword.rgb(colorNameTyped.toLowerCase());
-                        //check if the color exists in the list
-                        //if it doesnt exist the method returns null.
-                        if ((converted.toString()) != null.toString()) {
-            
-                          _controller.clear(); //clears the textfield
-                          return converted;
-                        } else {
-                          print('error');
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Wrong color name'),behavior: SnackBarBehavior.floating,));
-                          
-                          _controller.clear();
-                        }
+              colorCodeBuilder: (contex, color) {
+                
+                return buildDialog(controller: _controller,color: color,onSubmit: 
+                 (colorNameTyped) async {
+                    //using the color converter library/dependency to get the name of the color
+                    //convert its value to hex first
+                    List colorRGBValue() {
+                      var converted =
+                          convert.keyword.rgb(colorNameTyped.toLowerCase());
+                      //check if the color exists in the list
+                      //if it doesnt exist the method returns null.
+                      if ((converted.toString()) != null.toString()) {
+                        _controller.clear(); //clears the textfield
+                        context.runtimeType;
+                        return converted;
+                      } else {
+                        print('error');
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text('Wrong color name'),
+                          behavior: SnackBarBehavior.floating,
+                        ));
+
+                        _controller.clear();
                       }
+                    }
 
-                      var colorName = colorRGBValue();
-                      //convert it to the accepted ARGB format for colors
-                      Color bandcolorSelected = Color.fromARGB(
-                          255, colorName[0], colorName[1], colorName[2]);
+                    var colorName = colorRGBValue();
+                    //convert it to the accepted ARGB format for colors
+                    Color bandcolorSelected = Color.fromARGB(
+                        255, colorName[0], colorName[1], colorName[2]);
 
-                      //change the color of the selected band according to the color input
-                      bandColorChange(bandcolorSelected);
-                    });
+                    //change the color of the selected band according to the color input
+                    await bandColorChange(bandcolorSelected);
+                  });
+               
               },
             ),
+            buildColorNameTextField(_controller, Colors.red, context),
             FlatButton(
                 onPressed: () {
                   print(testBandColor1.value);
@@ -340,11 +350,18 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                   print('<<<<<<>>>>>>');
 
                   matchColorToResistorValue(bandColor1);
+
+                  print('++++++++++++++++++++');
                 },
                 child: CupertinoPicker(
                     itemExtent: 2,
                     onSelectedItemChanged: null,
                     children: [Text('1'), Text('1')])),
+            ColorPicker(
+                width: screenWidth - 40,
+                onColorChanged: (Color color) {
+                  bandColorChange(color);
+                })
           ],
         ),
       ),
@@ -377,54 +394,5 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
         bandColor6 = color;
       });
     }
-  }
-}
-
-class ResistorBand extends StatefulWidget {
-  var _bandColor;
-  //Color colorPickerColor;
-
-  ResistorBand(this._bandColor);
-
-  @override
-  _ResistorBandState createState() => _ResistorBandState();
-}
-
-class _ResistorBandState extends State<ResistorBand> {
-  Widget colorChange() {
-    return CircleColorPicker(
-      onChanged: (Color color) {
-        setState(() {
-          widget._bandColor = color;
-        });
-      },
-      textStyle: TextStyle(
-        color: Colors.white,
-        fontSize: 30.0,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    bool selected = false;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selected = true;
-        });
-        // setState(() {
-        //   widget._bandColor = widget.colorPickerColor;
-        // });
-        print(selected);
-        print('greenAccent');
-        // colorChange();
-      },
-      child: Container(
-        color: widget._bandColor,
-        width: 10,
-      ),
-    );
   }
 }
