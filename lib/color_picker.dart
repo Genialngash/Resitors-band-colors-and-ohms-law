@@ -1,13 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:resistohms/constants.dart';
 
 typedef onChange = void Function(Color color);
 
 class ColorPicker extends StatefulWidget {
   final double width;
   final ValueChanged<Color> onColorChanged;
+  final ValueChanged<String> onSubmitColorName;
 
-  ColorPicker({this.width, this.onColorChanged});
+  ColorPicker({this.width, this.onColorChanged, this.onSubmitColorName});
 
   @override
   _ColorPickerState createState() => _ColorPickerState();
@@ -90,13 +92,13 @@ class _ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
     return Column(
       children: <Widget>[
         Center(
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onHorizontalDragStart: (DragStartDetails details) {
-             
               _colorChangeHandler(details.localPosition.dx);
             },
             onHorizontalDragUpdate: (DragUpdateDetails details) {
@@ -108,12 +110,12 @@ class _ColorPickerState extends State<ColorPicker> {
             //This outside padding makes it much easier to grab the slider because the gesture
             //detector has the extra padding to recognize gestures insider of
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: Container(
                 width: widget.width,
-                height: 15,
+                height: 20,
                 decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.grey[700]),
+                    border: Border.all(width: 2, color: Color(0xff062424)),
                     borderRadius: BorderRadius.circular(15),
                     gradient: LinearGradient(colors: _colors)),
                 child: CustomPaint(
@@ -122,7 +124,14 @@ class _ColorPickerState extends State<ColorPicker> {
               ),
             ),
           ),
-        ), 
+        ),
+        SizedBox(
+          height: 35,
+        ),
+        buildDialog(
+            controller: controller,
+            color: currentColor,
+            onSubmit: widget.onSubmitColorName)
       ],
     );
   }
@@ -139,8 +148,8 @@ class _SliderIndicatorPainter extends CustomPainter {
         //takes a position input and draws a circle at the current position,vertically centered
         //(which is where size.height/2 comes from in the offset)
         Offset(position, size.height / 2),
-        12,
-        Paint()..color = Colors.black);
+        14,
+        Paint()..color = Colors.black87);
   }
 
   @override
