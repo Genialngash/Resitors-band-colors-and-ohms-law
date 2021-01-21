@@ -41,7 +41,12 @@ class _HomePageState extends State<HomePage> {
          
        gradient: RadialGradient(
         
-         colors: [Color(0xff254B21),Color(0xff357A2C),Color(0xff174511)],
+         colors: [
+         
+         Color(0xff192323),
+        Color(0xff062424),
+        //Color(0xff0D0F14),
+         ],
        )
        ),
         child: ColorCodeCalculator(),
