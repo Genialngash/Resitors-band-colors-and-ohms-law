@@ -82,6 +82,14 @@ DropdownButton<int> androidDropdown({int totalBands, Function onChange}) {
   );
 }
 
+void buildSnackbar(BuildContext context,String message){
+  Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text( message
+                              ),
+                          behavior: SnackBarBehavior.floating,
+                        ));
+}
+
 // CupertinoPicker iOSPicker() {
 //     List<Text> pickerItems = [Text('3'), Text('4'), Text('5'), Text('6')];
 
