@@ -2,12 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 import 'package:resistohms/color_picker.dart';
-//import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-//import 'package:resistohms/cricin_colorPicker.dart';
+import 'dart:math';
 import 'constants.dart';
 import 'package:color_convert/color_convert.dart';
-
-//import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 
 class ColorCodeCalculator extends StatefulWidget {
   @override
@@ -23,6 +20,22 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   Color bandColor5 = Color.fromARGB(255, 0, 128, 0);
   Color bandColor6 = Color.fromARGB(255, 165, 42, 42);
   int totalBands = 5;
+// VALUE[0]  MULTIPLIER[1] TOLERANCE[2] TEMPERATURE CO-EFFICIENT[3]
+// 99 shows that the value of the color is not available in the band color chart.
+  List black = ['0', '1', '+/- 0%', '250 ppm/K', 'NULL'];
+  List brown = ['1', '10', '+/-1%', '100 ppm/K', '1%'];
+  List red = ['2', '100', '+/-2%', '50 ppm/K', '0.1%'];
+  List orange = ['3', '1000', '+/-0%', '15 ppm/K', '0.01%'];
+  List yellow = ['4', '10000', '+/-0%', '25 ppm/K', '0.001%'];
+  List green = ['5', '100000', '+/-0.5%', '20 ppm/K', 'NULL'];
+  List blue = ['6', '1000000', '+/-0.25%', '10 ppm/K', 'NULL'];
+  List violet = ['7', '10000000', '+/-0.1%', '5 ppm/K', 'NULL'];
+  List grey = ['8', '100000000', '+/-0.05%', '1 ppm/K', 'NULL'];
+  List white = ['9', '1000000000', '+/-0%', 'NULL', 'NULL'];
+  List gold = ['99', '0.1', '+/-5%', 'NULL', 'NULL'];
+  List silver = ['99', '0.01', '+/10%', 'NULL'];
+  //if the user inputs unavailable color
+  List noValue = ['99', '99', 'NULL', 'NULL', 'NULL'];
 
   Color testBandColor1 = Colors.orange;
   Color testBandColor2 = Colors.yellow;
@@ -34,8 +47,6 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   Color testBandColor8 = Color(0xffFFD700);
   Color testBandColor9 = Color(0xffC0C0C0);
 
-  Color colorPickerColor;
-  Color certainColor;
   bool selected1 = false;
   bool selected2 = false;
   bool selected3 = false;
@@ -44,38 +55,6 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   bool selected6 = false;
 
   TextEditingController _controller = TextEditingController();
-
-  // void matchColorToResistorValue(Color bandColor) {
-  //   //  ff03040E
-  //   if (bandColor.value <= 4278387726) {
-  //     print('black');
-  //   } else if (bandColor.value <= 4280391411) {
-  //     print('blue');
-  //   } else if (bandColor.value <= 4283215696) {
-  //     print('green');
-  //   } else if (bandColor.value <= 4286141768) {
-  //     print('brown');
-  //   } else if (bandColor.value <= 4288585374) {
-  //     print('grey');
-  //   } else if (bandColor.value <= 4293821166) {
-  //     print('violet');
-  //   } else if (bandColor.value <= 4294198070) {
-  //     print('red');
-  //   } else if (bandColor.value <= 4290822336) {
-  //     print('silver');
-  //   } else if (bandColor.value <= 4294940672) {
-  //     print('orange');
-  //   } else if (bandColor.value <= 4294956800) {
-  //     print('gold');
-  //   } else if (bandColor.value <= 4294961979) {
-  //     print('yellow');
-  //   } else if (bandColor.value <= 4294967295) {
-  //     print('white');
-  //   } else {
-  //     print('not a color');
-  //   }
-  // }
-
   AnimationController _animationController;
   Animation<double> _animation;
   @override
@@ -101,47 +80,63 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
     super.dispose();
   }
 
-  void matchColorToResistorValue(Color bandColor) {
+  List matchColorToResistorValue(Color bandColor) {
     var converted =
         convert.hex.keyword(bandColor.value.toRadixString(16)).toString();
-  
+
     if (converted == 'red' || converted == 'firebrick') {
       print('red');
+      return red;
     } else if (converted == 'mediumblue' ||
         converted == 'midnightblue' ||
         converted == 'blue' ||
-        converted == 'royalblue') {
+        converted == 'royalblue' ||
+        converted == 'darkblue') {
       print('blue');
+      return blue;
     } else if (converted == 'green' ||
-        converted == 'olivedrab' ||
-        converted == 'forestgreen' ||
-        converted == 'darkgreen' ||
-        converted == 'darkslategray') {
+            converted == 'olivedrab' ||
+            converted == 'forestgreen' ||
+            converted == 'darkgreen'
+        // converted == 'darkslategray'
+        ) {
       print('green');
+      return green;
     } else if (converted == 'brown' || converted == 'sienna') {
       print('brown');
+      return brown;
     } else if (converted == 'dimgray' ||
         converted == 'darkgray' ||
         converted == 'gray') {
       print('grey');
+      return grey;
     } else if (converted == 'mediumorchid' ||
         converted == 'orchid' ||
         converted == 'violet') {
       print('violet');
+      return violet;
     } else if (converted == 'silver') {
       print('silver');
+      return silver;
     } else if (converted == 'darkorange' || converted == 'orange') {
       print('orange');
+      return orange;
     } else if (converted == 'gold') {
       print('gold');
+      return gold;
     } else if (converted == 'yellow' || converted == 'greenyellow') {
       print('yellow');
+      return yellow;
     } else if (converted == 'snow' ||
         converted == 'white' ||
         converted == 'whitesmoke') {
       print('white');
+      return white;
     } else if (converted == 'black' || converted == 'darkslategray') {
       print('black');
+      return black;
+    } else {
+      return noValue;
     }
   }
 
@@ -198,10 +193,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
         bandColorChange(bandcolorSelected);
       } else {
         print('error');
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('Wrong color name'),
-          behavior: SnackBarBehavior.floating,
-        ));
+        buildSnackbar(context, 'Wrong color name');
         _controller.clear();
       }
     }
@@ -398,24 +390,78 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                   onPressed: () {
                     print('<<<<<<>>>>>>');
 
-                    matchColorToResistorValue(bandColor1);
+                    if (totalBands == 5) {
+                      var band1 = matchColorToResistorValue(bandColor1);
+                      var band2 = matchColorToResistorValue(bandColor2);
+                      var band3 = matchColorToResistorValue(bandColor3);
+                      var band4 = matchColorToResistorValue(bandColor4);
+                      var band5 = matchColorToResistorValue(bandColor6);
 
-                    print('++++++++++++++++++++');
-                    matchColorToResistorValue(bandColor2);
+                      //change the first elements from string to int (casting)
+                      var fig = int.tryParse(band1[0] + band2[0] + band3[0]);
+                      //multiply the fig with the value of the resistor multiplier
 
-                    print('++++++++++++++++++++');
-                    matchColorToResistorValue(bandColor3);
+                      var answe = (fig * (double.tryParse(band4[1]))) / 1000;
+                      // add the tolerance
+                      var answer = answe.toString() + ' Kohms  ' + band5[2];
+                      print(fig);
+                      print(answe);
+                      print(answer);
+                      print('++++++++++++++++++++');
+                    } else if (totalBands == 6) {
+                      var band1 = matchColorToResistorValue(bandColor1);
+                      var band2 = matchColorToResistorValue(bandColor2);
+                      var band3 = matchColorToResistorValue(bandColor3);
+                      var band4 = matchColorToResistorValue(bandColor4);
+                      var band5 = matchColorToResistorValue(bandColor5);
+                      var band6 = matchColorToResistorValue(bandColor6);
 
-                    print('++++++++++++++++++++');
-                    matchColorToResistorValue(bandColor4);
+                      //change the first elements from string to int (casting)
+                      var first3bands =
+                          int.tryParse(band1[0] + band2[0] + band3[0]);
+                      //multiply the fig with the value of the resistor multiplier
+                      var answe = (first3bands * (double.tryParse(band4[1])));
 
-                    print('++++++++++++++++++++');
-                    matchColorToResistorValue(bandColor5);
+                      if (first3bands > 1000 || band4[1] == '99') {
+                        print('there is problem with the bands selected');
+                        buildSnackbar(context,
+                            'Please check the color of the bands selected');
+                      }
+                      // add the tolerance and temperature co-efficient
+                      if (answe > 100000) {
+                        answe = answe / 100000;
+                        var answer = answe.toString() +
+                            ' MegaOhms  ' +
+                            band5[2] +
+                            ' Tolerance ' +
+                            band6[3] +
+                            ' Temp co-eff';
+                        print(answe);
+                        print(answer);
+                      } else if (answe > 1000) {
+                        answe = answe / 1000;
+                        var answer = answe.toString() +
+                            ' KiloOhms  ' +
+                            band5[2] +
+                            ' Tolerance ' +
+                            band6[3] +
+                            ' Temp co-eff';
+                        print(answer);
+                      } else {
+                        var answer = answe.toString() +
+                            ' ohms  ' +
+                            band5[2] +
+                            ' Tolerance ' +
+                            band6[3] +
+                            ' Temp co-eff';
 
-                    print('++++++++++++++++++++');
-                    matchColorToResistorValue(bandColor6);
+                        print(answer);
+                      }
 
-                    print('++++++++++++++++++++');
+                      print(first3bands);
+                      print(answe);
+                      print('++++++++++++++++++++');
+                    }
                   },
                   child: Text('calculate')),
             ],
