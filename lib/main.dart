@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomePage(),
-
     );
   }
 }
@@ -30,25 +29,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true  ,
+        centerTitle: true,
         title: Text('RESIST'),
       ),
       body: Container(
-        
         alignment: Alignment.center,
-       // color: Colors.blueGrey,
-       decoration: BoxDecoration(
-         
-       gradient: RadialGradient(
-        
-         colors: [
-         
-         Color(0xff192323),
-        Color(0xff062424),
-        //Color(0xff0D0F14),
-         ],
-       )
-       ),
+        // color: Colors.blueGrey,
+        decoration: BoxDecoration(
+            gradient: RadialGradient(
+              tileMode: TileMode.mirror,
+          colors: [
+            //Color(0xff192323),
+          //Color(0xff213F21),
+             Color(0xff114111),
+            Color(0xff305A3F),
+            Color(0xff305A3F),
+           // Color(0xff062424),
+           
+            // Color(0xff4D4D55),
+          ],
+        )),
         child: ColorCodeCalculator(),
       ),
     );

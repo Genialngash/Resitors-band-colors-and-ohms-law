@@ -35,7 +35,8 @@ Dialog buildDialog(
     {TextEditingController controller, Color color, Function onSubmit}) {
   return Dialog(
     elevation: 3.0,
-    backgroundColor: Color(0xff3C444E),
+    //backgroundColor: Color(0xff062424),
+    backgroundColor: Colors.blueGrey,
     insetPadding: EdgeInsets.symmetric(horizontal: 65),
     child: TextField(
         style: TextStyle(color: Colors.white),
@@ -49,11 +50,9 @@ Dialog buildDialog(
           hintText:
               convert.hex.keyword(color.value.toRadixString(16)).toString(),
         ),
-        onSubmitted: onSubmit
-        ),
+        onSubmitted: onSubmit),
   );
 }
-
 
 DropdownButton<int> androidDropdown({int totalBands, Function onChange}) {
   List<DropdownMenuItem<int>> dropDownMenuItems = [
@@ -76,18 +75,26 @@ DropdownButton<int> androidDropdown({int totalBands, Function onChange}) {
   ];
 
   return DropdownButton<int>(
+    iconEnabledColor: Colors.cyan,
+    style: textStyling(),
     value: totalBands,
     items: dropDownMenuItems,
     onChanged: onChange,
   );
 }
 
-void buildSnackbar(BuildContext context,String message){
+void buildSnackbar(BuildContext context, String message) {
   Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text( message
-                              ),
-                          behavior: SnackBarBehavior.floating,
-                        ));
+    content: Text(message),
+    behavior: SnackBarBehavior.floating,
+  ));
+}
+
+TextStyle textStyling() {
+  return TextStyle(
+    color: Color(0xffD9D9E3),
+    fontWeight: FontWeight.w400,
+  );
 }
 
 // CupertinoPicker iOSPicker() {
