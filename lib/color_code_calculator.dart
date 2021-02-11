@@ -21,7 +21,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   Color bandColor5 = Color.fromARGB(255, 0, 128, 0);
   Color bandColor6 = Color.fromARGB(255, 165, 42, 42);
   int totalBands = 5;
-  var finalAnswer;
+  var finalAnswer = '462.0 ohms +/- 1% Tolerance';
   var answer;
 
   Color testBandColor1 = Colors.orange;
@@ -371,204 +371,21 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
               ),
               ColorPicker(
                 width: screenWidth - 40,
-                onColorChanged: (Color color) {
-                  bandColorChange(color);
-
-                  print('<<<<<<>>>>>>');
-
-                  var band1 = matchColorToResistorValue(bandColor1);
-                  var band2 = matchColorToResistorValue(bandColor2);
-                  var band3 = matchColorToResistorValue(bandColor3);
-                  var band4 = matchColorToResistorValue(bandColor4);
-                  var band5 = matchColorToResistorValue(bandColor5);
-                  var band6 = matchColorToResistorValue(bandColor6);
-
-                  if (totalBands == 3) {
-                    String defaultTolerance3Band = '+/- 20% Tolerance';
-                    //change the first elements from string to int (casting)
-                    var first2Bands = int.tryParse(band1[0] + band4[0]);
-
-                    //multiply the first3Bands with the value of the resistor multiplier
-                    var answe = (first2Bands * (double.tryParse(band6[1])));
-
-                    //check if the user has selected incorrect color
-                    if (first2Bands > 100 || band4[1] == '99') {
-                      print('there is problem with the bands selected');
-                      answer = 'Please check the color selected';
-                    }
-
-                    //add the tolerance
-                    else if (answe > 100000) {
-                      answe = answe / 100000;
-                      answer = answe.toString() +
-                          ' MegaOhms  ' +
-                          defaultTolerance3Band;
-
-                      print(answe);
-                      print(answer);
-                    } else if (answe > 1000) {
-                      answe = answe / 1000;
-                      answer = answe.toString() +
-                          ' KiloOhms  ' +
-                          defaultTolerance3Band;
-                      print(answer);
-                    } else {
-                      answer =
-                          answe.toString() + ' ohms  ' + defaultTolerance3Band;
-                      print(answer);
-                    }
-                    setState(() {
-                      finalAnswer = answer;
-                    });
-                    return answer;
-                  } else if (totalBands == 4) {
-                    //change the first elements from string to int (casting)
-                    var first2Bands = int.tryParse(band1[0] + band3[0]);
-                    //multiply the first3Bands with the value of the resistor multiplier
-
-                    var answe = (first2Bands * (double.tryParse(band4[1])));
-                    //check if the user has selected incorrect color
-                    if (first2Bands > 1000 || band4[1] == '99') {
-                      print('there is problem with the bands selected');
-                      answer = 'Please check the color selected';
-                    }
-                    //add the tolerance
-                    else if (answe > 100000) {
-                      answe = answe / 100000;
-                      answer = answe.toString() +
-                          ' MegaOhms  ' +
-                          band6[2] +
-                          ' Tolerance ';
-
-                      print(answe);
-                      print(answer);
-                    } else if (answe > 1000) {
-                      answe = answe / 1000;
-                      answer = answe.toString() +
-                          ' KiloOhms  ' +
-                          band6[2] +
-                          ' Tolerance ';
-                      print(answer);
-                    } else {
-                      answer = answe.toString() +
-                          ' ohms  ' +
-                          band6[2] +
-                          ' Tolerance ';
-
-                      print(answer);
-                    }
-                    setState(() {
-                      finalAnswer = answer;
-                    });
-                    return answer;
-                  } else if (totalBands == 5) {
-                    //change the first elements from string to int (casting)
-                    var first3Bands =
-                        int.tryParse(band1[0] + band2[0] + band3[0]);
-                    //multiply the first3Bands with the value of the resistor multiplier
-
-                    var answe = (first3Bands * (double.tryParse(band4[1])));
-
-                    //check if the user has selected incorrect color
-                    if (first3Bands > 1000 || band4[1] == '99') {
-                      print('there is problem with the bands selected');
-                      answer = 'Please check the color selected';
-                    }
-
-                    //add the tolerance
-                    else if (answe > 100000) {
-                      answe = answe / 100000;
-                      answer = answe.toString() +
-                          ' MegaOhms  ' +
-                          band6[2] +
-                          ' Tolerance ';
-
-                      print(answe);
-                      print(answer);
-                    } else if (answe > 1000) {
-                      answe = answe / 1000;
-                      answer = answe.toString() +
-                          ' KiloOhms  ' +
-                          band6[2] +
-                          ' Tolerance ';
-                      print(answer);
-                    } else {
-                      answer = answe.toString() +
-                          ' ohms  ' +
-                          band6[2] +
-                          ' Tolerance ';
-
-                      print(answer);
-                    }
-                    print('++++++++++++++++++++');
-                    setState(() {
-                      finalAnswer = answer;
-                    });
-                    return answer;
-                  } else if (totalBands == 6) {
-                    //change the first elements from string to int (casting)
-                    var first3bands =
-                        int.tryParse(band1[0] + band2[0] + band3[0]);
-                    //multiply the fig with the value of the resistor multiplier
-                    var answe = (first3bands * (double.tryParse(band4[1])));
-
-                    //check if the user has selected incorrect color
-                    if (first3bands > 1000 || band4[1] == '99') {
-                      print('there is problem with the bands selected');
-                      answer = 'Please check the color selected';
-                    }
-                    // add the tolerance and temperature co-efficient
-                    else if (answe > 100000) {
-                      answe = answe / 100000;
-                      answer = answe.toString() +
-                          ' MegaOhms  ' +
-                          band5[2] +
-                          ' Tolerance ' +
-                          band6[3] +
-                          ' Temp co-eff';
-                      print(answe);
-                      print(answer);
-                      return answer;
-                    } else if (answe > 1000) {
-                      answe = answe / 1000;
-                      answer = answe.toString() +
-                          ' KiloOhms  ' +
-                          band5[2] +
-                          ' Tolerance ' +
-                          band6[3] +
-                          ' Temp co-eff';
-                      print(answer);
-                      return answer;
-                    } else {
-                      answer = answe.toString() +
-                          ' ohms  ' +
-                          band5[2] +
-                          ' Tolerance ' +
-                          band6[3] +
-                          ' Temp co-eff';
-
-                      print(answer);
-                    }
-
-                    print(first3bands);
-                    print(answe);
-                    print('++++++++++++++++++++');
-                    setState(() {
-                      finalAnswer = answer;
-                    });
-                    return answer;
-                  }
-                  setState(() {
-                    finalAnswer = answer;
-                  });
+                onColorChanged: (Color color) async {
+                  await bandColorChange(color);
+                  calculateFinalAnswer();
                 },
                 onSubmitColorName: (colorNameTyped) {
                   changeBandColorFromTextFieldInput(colorNameTyped, context);
+                  calculateFinalAnswer();
                 },
               ),
               CircleColorPicker(
                   strokeWidth: 5,
-                  onChanged: bandColorChange,
+                  onChanged: (Color color) {
+                    bandColorChange(color);
+                    calculateFinalAnswer();
+                  },
                   colorCodeBuilder: (contex, color) {
                     return buildDialog(
                         controller: _controller,
@@ -576,358 +393,193 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                         onSubmit: (colorNameTyped) {
                           changeBandColorFromTextFieldInput(
                               colorNameTyped, context);
+                          calculateFinalAnswer();
                         });
                   }),
+              Text(finalAnswer.toString(),style: textStyling(fontSize: 24),),
               Text(finalAnswer.toString()),
-              FlatButton(
-                  onPressed: () {
-                    // print('<<<<<<>>>>>>');
-
-                    // var band1 = matchColorToResistorValue(bandColor1);
-                    // var band2 = matchColorToResistorValue(bandColor2);
-                    // var band3 = matchColorToResistorValue(bandColor3);
-                    // var band4 = matchColorToResistorValue(bandColor4);
-                    // var band5 = matchColorToResistorValue(bandColor5);
-                    // var band6 = matchColorToResistorValue(bandColor6);
-
-                    // if (totalBands == 3) {
-                    //   //change the first elements from string to int (casting)
-                    //   var first2Bands = int.tryParse(band1[0] + band4[0]);
-
-                    //   //multiply the first3Bands with the value of the resistor multiplier
-                    //   var answe = (first2Bands * (double.tryParse(band6[1])));
-
-                    //   //check if the user has selected incorrect color
-                    //   if (first2Bands > 1000 || band4[1] == '99') {
-                    //     print('there is problem with the bands selected');
-                    //     buildSnackbar(
-                    //         context, 'Please check the color of the bands selected');
-                    //   }
-
-                    //   String defaultTolerance3Band = '+/- 20% Tolerance';
-                    //   //add the tolerance
-                    //   if (answe > 100000) {
-                    //     answe = answe / 100000;
-                    //     answer = answe.toString() + ' MegaOhms  ' + defaultTolerance3Band;
-
-                    //     print(answe);
-                    //     print(answer);
-                    //   } else if (answe > 1000) {
-                    //     answe = answe / 1000;
-                    //     answer = answe.toString() + ' KiloOhms  ' + defaultTolerance3Band;
-                    //     print(answer);
-                    //   } else {
-                    //     answer = answe.toString() + ' ohms  ' + defaultTolerance3Band;
-                    //     print(answer);
-                    //   }
-                    //   return answer;
-                    // } else if (totalBands == 4) {
-                    //   //change the first elements from string to int (casting)
-                    //   var first2Bands = int.tryParse(band1[0] + band3[0]);
-                    //   //multiply the first3Bands with the value of the resistor multiplier
-
-                    //   var answe = (first2Bands * (double.tryParse(band4[1])));
-                    //   //check if the user has selected incorrect color
-                    //   if (first2Bands > 1000 || band4[1] == '99') {
-                    //     print('there is problem with the bands selected');
-                    //     buildSnackbar(
-                    //         context, 'Please check the color of the bands selected');
-                    //   }
-                    //   //add the tolerance
-                    //   if (answe > 100000) {
-                    //     answe = answe / 100000;
-                    //     answer =
-                    //         answe.toString() + ' MegaOhms  ' + band6[2] + ' Tolerance ';
-
-                    //     print(answe);
-                    //     print(answer);
-                    //   } else if (answe > 1000) {
-                    //     answe = answe / 1000;
-                    //     answer =
-                    //         answe.toString() + ' KiloOhms  ' + band6[2] + ' Tolerance ';
-                    //     print(answer);
-                    //   } else {
-                    //     answer = answe.toString() + ' ohms  ' + band6[2] + ' Tolerance ';
-
-                    //     print(answer);
-                    //   }
-                    //   return answer;
-                    // } else if (totalBands == 5) {
-                    //   //change the first elements from string to int (casting)
-                    //   var first3Bands = int.tryParse(band1[0] + band2[0] + band3[0]);
-                    //   //multiply the first3Bands with the value of the resistor multiplier
-
-                    //   var answe = (first3Bands * (double.tryParse(band4[1])));
-
-                    //   //check if the user has selected incorrect color
-                    //   if (first3Bands > 1000 || band4[1] == '99') {
-                    //     print('there is problem with the bands selected');
-                    //     buildSnackbar(
-                    //         context, 'Please check the color of the bands selected');
-                    //   }
-
-                    //   //add the tolerance
-                    //   if (answe > 100000) {
-                    //     answe = answe / 100000;
-                    //     answer =
-                    //         answe.toString() + ' MegaOhms  ' + band6[2] + ' Tolerance ';
-
-                    //     print(answe);
-                    //     print(answer);
-                    //   } else if (answe > 1000) {
-                    //     answe = answe / 1000;
-                    //     answer =
-                    //         answe.toString() + ' KiloOhms  ' + band6[2] + ' Tolerance ';
-                    //     print(answer);
-                    //   } else {
-                    //     answer = answe.toString() + ' ohms  ' + band6[2] + ' Tolerance ';
-
-                    //     print(answer);
-                    //   }
-                    //   print('++++++++++++++++++++');
-                    //   return answer;
-                    // } else if (totalBands == 6) {
-                    //   //change the first elements from string to int (casting)
-                    //   var first3bands = int.tryParse(band1[0] + band2[0] + band3[0]);
-                    //   //multiply the fig with the value of the resistor multiplier
-                    //   var answe = (first3bands * (double.tryParse(band4[1])));
-
-                    //   //check if the user has selected incorrect color
-                    //   if (first3bands > 1000 || band4[1] == '99') {
-                    //     print('there is problem with the bands selected');
-                    //     buildSnackbar(
-                    //         context, 'Please check the color of the bands selected');
-                    //   }
-                    //   // add the tolerance and temperature co-efficient
-                    //   if (answe > 100000) {
-                    //     answe = answe / 100000;
-                    //     answer = answe.toString() +
-                    //         ' MegaOhms  ' +
-                    //         band5[2] +
-                    //         ' Tolerance ' +
-                    //         band6[3] +
-                    //         ' Temp co-eff';
-                    //     print(answe);
-                    //     print(answer);
-                    //     return answer;
-                    //   } else if (answe > 1000) {
-                    //     answe = answe / 1000;
-                    //     answer = answe.toString() +
-                    //         ' KiloOhms  ' +
-                    //         band5[2] +
-                    //         ' Tolerance ' +
-                    //         band6[3] +
-                    //         ' Temp co-eff';
-                    //     print(answer);
-                    //     return answer;
-                    //   } else {
-                    //     answer = answe.toString() +
-                    //         ' ohms  ' +
-                    //         band5[2] +
-                    //         ' Tolerance ' +
-                    //         band6[3] +
-                    //         ' Temp co-eff';
-
-                    //     print(answer);
-                    //   }
-
-                    //   print(first3bands);
-                    //   print(answe);
-                    //   print('++++++++++++++++++++');
-                    //   return answer;
-                    // }
-                  },
-                  child: Text(finalAnswer.toString())),
+              
             ],
           ),
         ),
       ),
     );
   }
+
+  void calculateFinalAnswer() {
+    print('<<<<<<>>>>>>');
+
+    var band1 = matchColorToResistorValue(bandColor1);
+    var band2 = matchColorToResistorValue(bandColor2);
+    var band3 = matchColorToResistorValue(bandColor3);
+    var band4 = matchColorToResistorValue(bandColor4);
+    var band5 = matchColorToResistorValue(bandColor5);
+    var band6 = matchColorToResistorValue(bandColor6);
+
+    if (totalBands == 3) {
+      String defaultTolerance3Band = '+/- 20% Tolerance';
+      //change the first elements from string to int (casting)
+      var first2Bands = int.tryParse(band1[0] + band4[0]);
+
+      //multiply the first3Bands with the value of the resistor multiplier
+      var answe = (first2Bands * (double.tryParse(band6[1])));
+
+      //check if the user has selected incorrect color
+      if (first2Bands > 100 || band4[1] == '99') {
+        print('there is problem with the bands selected');
+        answer = 'Please check the color selected';
+      }
+
+      //add the tolerance
+      else if (answe > 100000) {
+        answe = answe / 100000;
+        answer = answe.toString() + ' MegaOhms  ' + defaultTolerance3Band;
+
+        print(answe);
+        print(answer);
+      } else if (answe > 1000) {
+        answe = answe / 1000;
+        answer = answe.toString() + ' KiloOhms  ' + defaultTolerance3Band;
+        print(answer);
+      } else {
+        answer = answe.toString() + ' ohms  ' + defaultTolerance3Band;
+        print(answer);
+      }
+      setState(() {
+        finalAnswer = answer;
+      });
+      return answer;
+    } else if (totalBands == 4) {
+      //change the first elements from string to int (casting)
+      var first2Bands = int.tryParse(band1[0] + band3[0]);
+      //multiply the first3Bands with the value of the resistor multiplier
+
+      var answe = (first2Bands * (double.tryParse(band4[1])));
+      //check if the user has selected incorrect color
+      if (first2Bands > 1000 || band4[1] == '99') {
+        print('there is problem with the bands selected');
+        answer = 'Please check the color selected';
+      }
+      //add the tolerance
+      else if (answe > 100000) {
+        answe = answe / 100000;
+        answer = answe.toString() + ' MegaOhms  ' + band6[2] + ' Tolerance ';
+
+        print(answe);
+        print(answer);
+      } else if (answe > 1000) {
+        answe = answe / 1000;
+        answer = answe.toString() + ' KiloOhms  ' + band6[2] + ' Tolerance ';
+        print(answer);
+      } else {
+        answer = answe.toString() + ' ohms  ' + band6[2] + ' Tolerance ';
+
+        print(answer);
+      }
+      setState(() {
+        finalAnswer = answer;
+      });
+      return answer;
+    } else if (totalBands == 5) {
+      //change the first elements from string to int (casting)
+      var first3Bands = int.tryParse(band1[0] + band2[0] + band3[0]);
+      //multiply the first3Bands with the value of the resistor multiplier
+
+      var answe = (first3Bands * (double.tryParse(band4[1])));
+
+      //check if the user has selected incorrect color
+      if (first3Bands > 1000 || band4[1] == '99') {
+        print('there is problem with the bands selected');
+        answer = 'Please check the color selected';
+      }
+
+      //add the tolerance
+      else if (answe > 100000) {
+        answe = answe / 100000;
+        answer = answe.toString() + ' MegaOhms  ' + band6[2] + ' Tolerance ';
+
+        print(answe);
+        print(answer);
+      } else if (answe > 1000) {
+        answe = answe / 1000;
+        answer = answe.toString() + ' KiloOhms  ' + band6[2] + ' Tolerance ';
+        print(answer);
+      } else {
+        answer = answe.toString() + ' ohms  ' + band6[2] + ' Tolerance ';
+
+        print(answer);
+      }
+      print('++++++++++++++++++++');
+      setState(() {
+        finalAnswer = answer;
+      });
+      return answer;
+    } else if (totalBands == 6) {
+      //change the first elements from string to int (casting)
+      var first3bands = int.tryParse(band1[0] + band2[0] + band3[0]);
+      //multiply the fig with the value of the resistor multiplier
+      var answe = (first3bands * (double.tryParse(band4[1])));
+
+      //check if the user has selected incorrect color
+      if (first3bands > 1000 || band4[1] == '99') {
+        print('there is problem with the bands selected');
+        answer = 'Please check the color selected';
+      }
+      // add the tolerance and temperature co-efficient
+      else if (answe > 1000000000) {
+        answe = answe / 1000000000;
+        answer = answe.toString() +
+            ' GigaOhms  ' +
+            band5[2] +
+            ' Tolerance ' +
+            band6[3] +
+            ' Temp co-eff';
+        print(answe);
+        print(answer);
+      } else if (answe > 1000000) {
+        answe = answe / 1000000;
+        answer = answe.toString() +
+            ' MegaOhms  ' +
+            band5[2] +
+            ' Tolerance ' +
+            band6[3] +
+            ' Temp co-eff';
+        print(answe);
+        print(answer);
+        return answer;
+      } else if (answe > 1000) {
+        answe = answe / 1000;
+        answer = answe.toString() +
+            ' KiloOhms  ' +
+            band5[2] +
+            ' Tolerance ' +
+            band6[3] +
+            ' Temp co-eff';
+        print(answer);
+        return answer;
+      } else {
+        answer = answe.toString() +
+            ' ohms  ' +
+            band5[2] +
+            ' Tolerance ' +
+            band6[3] +
+            ' Temp co-eff';
+
+        print(answer);
+      }
+
+      print(first3bands);
+      print(answe);
+      print('++++++++++++++++++++');
+      setState(() {
+        finalAnswer = answer;
+      });
+      return answer;
+    }
+    setState(() {
+      finalAnswer = answer;
+    });
+  }
 }
 
-// class AnswerButton extends StatelessWidget {
-//   AnswerButton({
-//     Key key,
-//     @required this.bandColor1,
-//     @required this.bandColor2,
-//     @required this.bandColor3,
-//     @required this.bandColor4,
-//     @required this.bandColor5,
-//     @required this.bandColor6,
-//     @required this.totalBands,
-//   });
 
-//   final Color bandColor1;
-//   final Color bandColor2;
-//   final Color bandColor3;
-//   final Color bandColor4;
-//   final Color bandColor5;
-//   final Color bandColor6;
-//   final int totalBands;
-
-//   @override
-//   Widget build(BuildContext context) {
-
-// var answer;
-//     return FlatButton(
-//         onPressed: () {
-//           print('<<<<<<>>>>>>');
-
-//           var band1 = matchColorToResistorValue(bandColor1);
-//           var band2 = matchColorToResistorValue(bandColor2);
-//           var band3 = matchColorToResistorValue(bandColor3);
-//           var band4 = matchColorToResistorValue(bandColor4);
-//           var band5 = matchColorToResistorValue(bandColor5);
-//           var band6 = matchColorToResistorValue(bandColor6);
-
-//           if (totalBands == 3) {
-//             //change the first elements from string to int (casting)
-//             var first2Bands = int.tryParse(band1[0] + band4[0]);
-
-//             //multiply the first3Bands with the value of the resistor multiplier
-//             var answe = (first2Bands * (double.tryParse(band6[1])));
-
-//             //check if the user has selected incorrect color
-//             if (first2Bands > 1000 || band4[1] == '99') {
-//               print('there is problem with the bands selected');
-//               buildSnackbar(
-//                   context, 'Please check the color of the bands selected');
-//             }
-
-//             String defaultTolerance3Band = '+/- 20% Tolerance';
-//             //add the tolerance
-//             if (answe > 100000) {
-//               answe = answe / 100000;
-//               answer = answe.toString() + ' MegaOhms  ' + defaultTolerance3Band;
-
-//               print(answe);
-//               print(answer);
-//             } else if (answe > 1000) {
-//               answe = answe / 1000;
-//               answer = answe.toString() + ' KiloOhms  ' + defaultTolerance3Band;
-//               print(answer);
-//             } else {
-//               answer = answe.toString() + ' ohms  ' + defaultTolerance3Band;
-//               print(answer);
-//             }
-//             return answer;
-//           } else if (totalBands == 4) {
-//             //change the first elements from string to int (casting)
-//             var first2Bands = int.tryParse(band1[0] + band3[0]);
-//             //multiply the first3Bands with the value of the resistor multiplier
-
-//             var answe = (first2Bands * (double.tryParse(band4[1])));
-//             //check if the user has selected incorrect color
-//             if (first2Bands > 1000 || band4[1] == '99') {
-//               print('there is problem with the bands selected');
-//               buildSnackbar(
-//                   context, 'Please check the color of the bands selected');
-//             }
-//             //add the tolerance
-//             if (answe > 100000) {
-//               answe = answe / 100000;
-//               answer =
-//                   answe.toString() + ' MegaOhms  ' + band6[2] + ' Tolerance ';
-
-//               print(answe);
-//               print(answer);
-//             } else if (answe > 1000) {
-//               answe = answe / 1000;
-//               answer =
-//                   answe.toString() + ' KiloOhms  ' + band6[2] + ' Tolerance ';
-//               print(answer);
-//             } else {
-//               answer = answe.toString() + ' ohms  ' + band6[2] + ' Tolerance ';
-
-//               print(answer);
-//             }
-//             return answer;
-//           } else if (totalBands == 5) {
-//             //change the first elements from string to int (casting)
-//             var first3Bands = int.tryParse(band1[0] + band2[0] + band3[0]);
-//             //multiply the first3Bands with the value of the resistor multiplier
-
-//             var answe = (first3Bands * (double.tryParse(band4[1])));
-
-//             //check if the user has selected incorrect color
-//             if (first3Bands > 1000 || band4[1] == '99') {
-//               print('there is problem with the bands selected');
-//               buildSnackbar(
-//                   context, 'Please check the color of the bands selected');
-//             }
-
-//             //add the tolerance
-//             if (answe > 100000) {
-//               answe = answe / 100000;
-//               answer =
-//                   answe.toString() + ' MegaOhms  ' + band6[2] + ' Tolerance ';
-
-//               print(answe);
-//               print(answer);
-//             } else if (answe > 1000) {
-//               answe = answe / 1000;
-//               answer =
-//                   answe.toString() + ' KiloOhms  ' + band6[2] + ' Tolerance ';
-//               print(answer);
-//             } else {
-//               answer = answe.toString() + ' ohms  ' + band6[2] + ' Tolerance ';
-
-//               print(answer);
-//             }
-//             print('++++++++++++++++++++');
-//             return answer;
-//           } else if (totalBands == 6) {
-//             //change the first elements from string to int (casting)
-//             var first3bands = int.tryParse(band1[0] + band2[0] + band3[0]);
-//             //multiply the fig with the value of the resistor multiplier
-//             var answe = (first3bands * (double.tryParse(band4[1])));
-
-//             //check if the user has selected incorrect color
-//             if (first3bands > 1000 || band4[1] == '99') {
-//               print('there is problem with the bands selected');
-//               buildSnackbar(
-//                   context, 'Please check the color of the bands selected');
-//             }
-//             // add the tolerance and temperature co-efficient
-//             if (answe > 100000) {
-//               answe = answe / 100000;
-//               answer = answe.toString() +
-//                   ' MegaOhms  ' +
-//                   band5[2] +
-//                   ' Tolerance ' +
-//                   band6[3] +
-//                   ' Temp co-eff';
-//               print(answe);
-//               print(answer);
-//               return answer;
-//             } else if (answe > 1000) {
-//               answe = answe / 1000;
-//               answer = answe.toString() +
-//                   ' KiloOhms  ' +
-//                   band5[2] +
-//                   ' Tolerance ' +
-//                   band6[3] +
-//                   ' Temp co-eff';
-//               print(answer);
-//               return answer;
-//             } else {
-//               answer = answe.toString() +
-//                   ' ohms  ' +
-//                   band5[2] +
-//                   ' Tolerance ' +
-//                   band6[3] +
-//                   ' Temp co-eff';
-
-//               print(answer);
-//             }
-
-//             print(first3bands);
-//             print(answe);
-//             print('++++++++++++++++++++');
-//             return answer;
-//           }
-//         },
-//         child: Text(answer.toString()));
-//   }
-// }

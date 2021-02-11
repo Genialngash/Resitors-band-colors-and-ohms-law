@@ -90,10 +90,11 @@ void buildSnackbar(BuildContext context, String message) {
   ));
 }
 
-TextStyle textStyling() {
+TextStyle textStyling({double fontSize}) {
   return TextStyle(
     color: Color(0xffD9D9E3),
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
+    fontSize: fontSize,
   );
 }
 

@@ -41,14 +41,18 @@ dev_dependencies:
 
 
 flutter:
-
-  
-  
-  
   uses-material-design: true
-
-  
-  
+   
+  fonts:
+    - family:  MyFlutterApp
+      fonts:
+       - asset: fonts/MyFlutterApp.ttf  
+    - family:  ResistorColorCode
+      fonts:
+       - asset: fonts/ResistorColorCode.ttf   
+    - family:  Smd
+      fonts:
+       - asset: fonts/Smd.ttf   
   
   
 
