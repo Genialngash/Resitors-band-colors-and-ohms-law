@@ -21,7 +21,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   Color bandColor5 = Color.fromARGB(255, 0, 128, 0);
   Color bandColor6 = Color.fromARGB(255, 165, 42, 42);
   int totalBands = 5;
-  var finalAnswer = '462.0 ohms +/- 1% Tolerance';
+  var finalAnswer = '462.0 ohms +/-1% Tolerance';
   var answer;
 
   Color testBandColor1 = Colors.orange;
@@ -58,6 +58,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
     _animation = CurvedAnimation(
         parent: _animationController, curve: Curves.easeInOutBack);
     _animationController.repeat(reverse: true);
+   // calculateFinalAnswer();
     super.initState();
   }
 
@@ -202,204 +203,228 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
       }
     }
 
-    return Scrollbar(
-      //isAlwaysShown: true,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              androidDropdown(
-                totalBands: totalBands,
-                onChange: (int newValue) {
-                  setState(() {
-                    totalBands = newValue;
-                  });
-                },
-              ),
-              FittedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    kresistorEndWire(2),
-                    Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        Container(
-                          height: 80,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                        ),
-                        Container(
-                          height: 60,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width:
-                                    40, //same as the container above it, reduced because of spaeceBetween
-                              ),
-                              InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      selected1 = true;
-                                      selected2 = selected3 = selected4 =
-                                          selected5 = selected6 = false;
-                                    });
+    return Container(
+      alignment: Alignment.center,
+      // decoration: BoxDecoration(
+      //           gradient: RadialGradient(
+      //         tileMode: TileMode.clamp,
+      //         colors: [
+      //           //Color(0xff192323),
+      //           //Color(0xff213F21),
+      //           Color(0xff114111),
+      //           Color(0xff305A3F),
+      //           Color(0xff305A3F),
+      //           // Color(0xff062424),
 
-                                    print('selected 1 is $selected1');
-                                  },
-                                  //if the band is selected ,show an animation.
-                                  child: selected1
-                                      ? buildFadeTransition(
-                                          bandColor1, _animation)
-                                      : buildBandContainer(bandColor1)),
-
-                              //check the n.o bands selected.
-                              (totalBands == 6 || totalBands == 5)
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selected2 = true;
-                                          selected1 = selected3 = selected4 =
-                                              selected5 = selected6 = false;
-                                        });
-
-                                        print('selected 2 is $selected2');
-                                      },
-                                      child: selected2
-                                          ? buildFadeTransition(
-                                              bandColor2, _animation)
-                                          : buildBandContainer(bandColor2),
-                                    )
-                                  : SizedBox.shrink(),
-                              (totalBands == 4) ||
-                                      (totalBands == 5) ||
-                                      (totalBands == 6)
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selected3 = true;
-                                          selected1 = selected2 = selected4 =
-                                              selected5 = selected6 = false;
-                                        });
-
-                                        print('selected 3 is $selected3');
-                                      },
-                                      child: selected3
-                                          ? buildFadeTransition(
-                                              bandColor3, _animation)
-                                          : buildBandContainer(bandColor3))
-                                  : SizedBox.shrink(),
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selected4 = true;
-                                      selected1 = selected2 = selected3 =
-                                          selected5 = selected6 = false;
-                                    });
-
-                                    print('selected 4 is $selected4');
-                                  },
-                                  child: selected4
-                                      ? buildFadeTransition(
-                                          bandColor4, _animation)
-                                      : buildBandContainer(bandColor4)),
-                              (totalBands == 6)
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selected5 = true;
-                                          selected1 = selected2 = selected3 =
-                                              selected4 = selected6 = false;
-                                        });
-
-                                        print('selected 5 is $selected5');
-                                      },
-                                      child: selected5
-                                          ? buildFadeTransition(
-                                              bandColor5, _animation)
-                                          : buildBandContainer(bandColor5))
-                                  : SizedBox.shrink(),
-                              SizedBox(
-                                width:
-                                    9, //the tolerance is further away from the other values
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selected6 = true;
-                                    selected1 = selected2 = selected3 =
-                                        selected4 = selected5 = false;
-                                  });
-                                  print('selected 6 is $selected6');
-                                },
-                                child: selected6
-                                    ? buildFadeTransition(
-                                        bandColor6, _animation)
-                                    : buildBandContainer(bandColor6),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        Container(
-                          height: 80,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.all(Radius.circular(14)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    kresistorEndWire(1),
-                  ],
+      //           // Color(0xff4D4D55),
+      //         ],
+      //       )),
+      child: Scrollbar(
+        //isAlwaysShown: true,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(20),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                androidDropdown(
+                  totalBands: totalBands,
+                  onChange: (int newValue) {
+                    
+                    setState(() {
+                      totalBands = newValue;
+                    });calculateFinalAnswer();
+                  },
                 ),
-              ),
-              ColorPicker(
-                width: screenWidth - 40,
-                onColorChanged: (Color color) async {
-                  await bandColorChange(color);
-                  calculateFinalAnswer();
-                },
-                onSubmitColorName: (colorNameTyped) {
-                  changeBandColorFromTextFieldInput(colorNameTyped, context);
-                  calculateFinalAnswer();
-                },
-              ),
-              CircleColorPicker(
-                  strokeWidth: 5,
-                  onChanged: (Color color) {
-                    bandColorChange(color);
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                 
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      kresistorEndWire(2),
+                      Stack(
+                        alignment: Alignment.centerLeft,
+                        children: [
+                          Container(
+                            height: 80,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                            ),
+                          ),
+                          Container(
+                            height: 60,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width:
+                                      40, //same as the container above it, reduced because of spaeceBetween
+                                ),
+                                InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        selected1 = true;
+                                        selected2 = selected3 = selected4 =
+                                            selected5 = selected6 = false;
+                                      });
+
+                                      print('selected 1 is $selected1');
+                                    },
+                                    //if the band is selected ,show an animation.
+                                    child: selected1
+                                        ? buildFadeTransition(
+                                            bandColor1, _animation)
+                                        : buildBandContainer(bandColor1)),
+
+                                //check the n.o bands selected.
+                                (totalBands == 6 || totalBands == 5)
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selected2 = true;
+                                            selected1 = selected3 = selected4 =
+                                                selected5 = selected6 = false;
+                                          });
+
+                                          print('selected 2 is $selected2');
+                                        },
+                                        child: selected2
+                                            ? buildFadeTransition(
+                                                bandColor2, _animation)
+                                            : buildBandContainer(bandColor2),
+                                      )
+                                    : SizedBox.shrink(),
+                                (totalBands == 4) ||
+                                        (totalBands == 5) ||
+                                        (totalBands == 6)
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selected3 = true;
+                                            selected1 = selected2 = selected4 =
+                                                selected5 = selected6 = false;
+                                          });
+
+                                          print('selected 3 is $selected3');
+                                        },
+                                        child: selected3
+                                            ? buildFadeTransition(
+                                                bandColor3, _animation)
+                                            : buildBandContainer(bandColor3))
+                                    : SizedBox.shrink(),
+                                GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selected4 = true;
+                                        selected1 = selected2 = selected3 =
+                                            selected5 = selected6 = false;
+                                      });
+
+                                      print('selected 4 is $selected4');
+                                    },
+                                    child: selected4
+                                        ? buildFadeTransition(
+                                            bandColor4, _animation)
+                                        : buildBandContainer(bandColor4)),
+                                (totalBands == 6)
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selected5 = true;
+                                            selected1 = selected2 = selected3 =
+                                                selected4 = selected6 = false;
+                                          });
+
+                                          print('selected 5 is $selected5');
+                                        },
+                                        child: selected5
+                                            ? buildFadeTransition(
+                                                bandColor5, _animation)
+                                            : buildBandContainer(bandColor5))
+                                    : SizedBox.shrink(),
+                                SizedBox(
+                                  width:
+                                      9, //the tolerance is further away from the other values
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selected6 = true;
+                                      selected1 = selected2 = selected3 =
+                                          selected4 = selected5 = false;
+                                    });
+                                    print('selected 6 is $selected6');
+                                  },
+                                  child: selected6
+                                      ? buildFadeTransition(
+                                          bandColor6, _animation)
+                                      : buildBandContainer(bandColor6),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Stack(
+                        alignment: Alignment.centerLeft,
+                        children: [
+                          Container(
+                            height: 80,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(14)),
+                            ),
+                          ),
+                        ],
+                      ),
+                      kresistorEndWire(1),
+                    ],
+                  ),
+                ),
+                ColorPicker(
+                  width: screenWidth - 40,
+                  onColorChanged: (Color color) async {
+                    await bandColorChange(color);
                     calculateFinalAnswer();
                   },
-                  colorCodeBuilder: (contex, color) {
-                    return buildDialog(
-                        controller: _controller,
-                        color: color,
-                        onSubmit: (colorNameTyped) {
-                          changeBandColorFromTextFieldInput(
-                              colorNameTyped, context);
-                          calculateFinalAnswer();
-                        });
-                  }),
-              Text(finalAnswer.toString(),style: textStyling(fontSize: 24),),
-              Text(finalAnswer.toString()),
-              
-            ],
+                  onSubmitColorName: (colorNameTyped) {
+                    changeBandColorFromTextFieldInput(colorNameTyped, context);
+                    calculateFinalAnswer();
+                  },
+                ),
+                CircleColorPicker(
+                    strokeWidth: 5,
+                    onChanged: (Color color) {
+                      bandColorChange(color);
+                      calculateFinalAnswer();
+                    },
+                    colorCodeBuilder: (contex, color) {
+                      return buildDialog(
+                          controller: _controller,
+                          color: color,
+                          onSubmit: (colorNameTyped) {
+                            changeBandColorFromTextFieldInput(
+                                colorNameTyped, context);
+                            calculateFinalAnswer();
+                          });
+                    }),
+                Text(
+                  finalAnswer.toString(),
+                  style: textStyling(fontSize: 24),
+                ),
+                Text(finalAnswer.toString()),
+              ],
+            ),
           ),
         ),
       ),
@@ -581,5 +606,3 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
     });
   }
 }
-
-
