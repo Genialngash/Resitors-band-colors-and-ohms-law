@@ -98,6 +98,16 @@ TextStyle textStyling({double fontSize}) {
   );
 }
 
+Container buildSmdEndContainer() {
+    return Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey,
+                    boxShadow: [BoxShadow(blurRadius: 4)]),
+                height: 135,
+                width: 30,
+              );
+  }
+
 // CupertinoPicker iOSPicker() {
 //     List<Text> pickerItems = [Text('3'), Text('4'), Text('5'), Text('6')];
 
