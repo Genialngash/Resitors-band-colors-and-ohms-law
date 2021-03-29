@@ -32,6 +32,7 @@ dependencies:
   flutter_snake_navigationbar: ^0.4.4
   settings_ui: ^0.5.0
   shared_preferences: ^0.5.12+4
+  flutter_svg: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +55,9 @@ flutter:
     - family:  Smd
       fonts:
        - asset: fonts/Smd.ttf   
-  
+  assets:
+    - assets/images/
+   
   
 
   

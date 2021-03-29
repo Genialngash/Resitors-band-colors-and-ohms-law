@@ -233,7 +233,8 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                     
                     setState(() {
                       totalBands = newValue;
-                    });calculateFinalAnswer();
+                    });
+                    calculateFinalAnswer();
                   },
                 ),
                 FittedBox(
@@ -241,6 +242,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                  
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    
                     children: [
                       kresistorEndWire(2),
                       Stack(
