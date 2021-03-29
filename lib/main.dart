@@ -2,6 +2,7 @@ import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:resistohms/color_picker.dart';
 import 'package:resistohms/custom_icons/smd_resistor_icons.dart';
+import 'package:resistohms/pages/Ohms_Law_calculator.dart';
 import 'package:resistohms/pages/Smd_resistance_calculator.dart';
 import 'constants.dart';
 import 'color_code_calculator.dart';
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('RESIST'),
+          title: Text('OHM\'S RESISTANCE'),
           actions: [
             IconButton(
               icon: Icon(
@@ -149,14 +150,14 @@ class TabNavigationItem {
           label: 'Color codes',
         ),
         TabNavigationItem(
-          page: SmdResistanceCalculator(),
+          page: OhmsLawCalculator(),
           icon: Icon(ohms_lawIcon),
-          label: 'Ohms Law calc',
+          label: 'Ohms Law ',
         ),
         TabNavigationItem(
           page: SmdResistanceCalculator(),
           icon: Icon(smd_icon),
-          label: 'SMD resistors',
+          label: 'SMD resistor',
         ),
         TabNavigationItem(
           page: Text('data'),
