@@ -14,6 +14,7 @@ class _SmdResistanceCalculatorState extends State<SmdResistanceCalculator> {
   var userInput;
   String hintText = '0R5';
   var finalAnswer = '0.5';
+                                        
   var output;
   String errorMessage = 'ERROR: type the correct SMD code!';
 
@@ -55,6 +56,7 @@ class _SmdResistanceCalculatorState extends State<SmdResistanceCalculator> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
