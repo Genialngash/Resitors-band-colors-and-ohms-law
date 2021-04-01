@@ -277,8 +277,9 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
             RaisedButton(
                 child: Text('Calculate'),
                 onPressed: () {
-                
-                  if (voltageFieldIsEmpty == false) {
+                try{
+
+                    if (voltageFieldIsEmpty == false) {
                     voltage = double.tryParse(voltageInput) * voltsMultiplier;
                   } else {
                     voltage = null;
@@ -304,8 +305,6 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
                   } else {
                     power = null;
                   }
-
-                  try {
                     // Two fields should be empty ,this is to avoid the user from inputting unmatching values
                     //check if the current field is empty first
                     if (currentFieldIsEmpty) {
