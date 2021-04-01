@@ -35,14 +35,65 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
     ),
   ];
 
+  List<DropdownMenuItem<int>> currentDownMenuItems = [
+    DropdownMenuItem(
+      child: Text('MegaAmps'),
+      value: 1000000,
+    ),
+    DropdownMenuItem(
+      child: Text('KiloAmps'),
+      value: 1000,
+    ),
+    DropdownMenuItem(
+      child: Text('Amps'),
+      value: 1,
+    ),
+    DropdownMenuItem(
+      child: Text('milliAmps'),
+      value: 99,
+    ),
+  ];
+
+  List<DropdownMenuItem<int>> resistanceDownMenuItems = [
+    DropdownMenuItem(
+      child: Text('MegaOhms'),
+      value: 1000000,
+    ),
+    DropdownMenuItem(
+      child: Text('KiloOhms'),
+      value: 1000,
+    ),
+    DropdownMenuItem(
+      child: Text('ohms'),
+      value: 1,
+    ),
+    DropdownMenuItem(
+      child: Text('millOhms'),
+      value: 99,
+    ),
+  ];
+
   int voltsMultiplier = 1;
+  int currentMultiplier = 1;
+  int resistanceMultiplier = 1;
+  int powerMultiplier = 1;
+
+  bool powerSelected = false;
   var voltage;
   var current;
   var resistance;
   var power;
+
+  var voltageInput;
+  var currentInput;
+  var resistanceInput;
+  var powerInput;
+
   var inputVoltage;
   String resistanceHintText = 'resistance';
   String powerHintText = 'power';
+  String currentHintText = 'current';
+  String voltageHintText = 'voltage';
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +121,13 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(),
-                  hintText: 'voltage',
+                  hintText: voltageHintText,
                   counter: Offstage(),
                 ),
                 onChanged: (String input) {
                   print(voltage);
                   setState(() {
-                    inputVoltage = double.tryParse(input);
+                    voltageInput = input;
                   });
                 },
                 // onEditingComplete: () {
@@ -88,19 +139,11 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
                 items: voltDownMenuItems,
                 underline: Offstage(),
                 onChanged: (int value) {
-                  if (value == 99) {
-                    setState(() {
-                      voltsMultiplier =
-                          value; // change the value to its respective name of the prefix
-                    });
-                    voltage = inputVoltage * 0.001;
-                  } else {
-                    setState(() {
-                      voltsMultiplier =
-                          value; // change the value to its respective name of the prefix
-                    });
-                    voltage = inputVoltage * value;
-                  }
+                  setState(() {
+                    voltsMultiplier =
+                        value; // change the value to its respective name of the prefix
+                  });
+
                   print(voltage);
                 },
                 value: voltsMultiplier,
@@ -117,24 +160,35 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(),
-                  hintText: 'current',
+                  hintText: currentHintText,
                   counter: Offstage(),
                 ),
                 onChanged: (String input) {
                   setState(() {
-                    current = double.tryParse(input);
+                    // _currentController.text = input;
+                    currentInput = input;
                   });
                 },
                 // onEditingComplete: () {
                 //   _voltageController.clear();
                 // },
               ),
-              trailing:
-                  DropdownButton(items: voltDownMenuItems, onChanged: null),
+              trailing: DropdownButton(
+                  items: currentDownMenuItems,
+                  value: currentMultiplier,
+                  underline: Offstage(),
+                  onChanged: (int value) {
+                    setState(() {
+                      currentMultiplier = value;
+                    });
+
+                    print(current);
+                  }),
             ),
             ListTile(
               title: TextField(
                 cursorWidth: 4.0,
+
                 keyboardType: TextInputType.numberWithOptions(),
                 controller: _resistanceController,
                 maxLength: 14,
@@ -148,17 +202,38 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
                 ),
                 onChanged: (String input) {
                   setState(() {
-                    resistance = double.tryParse(input);
+                    //  _resistanceController.text = input;
+                    resistanceInput = input;
                   });
+                  input = _resistanceController.text;
+                  print("============");
+                  print(input);
+                  print("============");
                 },
                 // onEditingComplete: () {
                 //   _voltageController.clear();
                 // },
               ),
-              trailing:
-                  DropdownButton(items: voltDownMenuItems, onChanged: null),
+              trailing: DropdownButton(
+                  items: resistanceDownMenuItems,
+                  value: resistanceMultiplier,
+                  underline: Offstage(),
+                  onChanged: (int value) {
+                    setState(() {
+                      resistanceMultiplier = value;
+                    });
+                  }),
             ),
             ListTile(
+              subtitle: Checkbox(
+                  // tristate: true,
+                  value: powerSelected,
+                  onChanged: (bool value) {
+                    print(powerSelected);
+                    setState(() {
+                      powerSelected = value;
+                    });
+                  }),
               title: TextField(
                 cursorWidth: 4.0,
                 keyboardType: TextInputType.numberWithOptions(),
@@ -170,79 +245,171 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(),
                   hintText: powerHintText,
+                  hintMaxLines: 3,
                   counter: Offstage(),
                 ),
                 onChanged: (String input) {
                   setState(() {
-                    power = double.tryParse(input);
+                    powerInput = input;
                   });
                 },
-                // onEditingComplete: () {
-                //   _voltageController.clear();
-                // },
+                onEditingComplete: () {
+                  print('on editing com');
+                },
               ),
-              trailing:
-                  DropdownButton(items: voltDownMenuItems, onChanged: null),
+              trailing: DropdownButton(
+                  underline: Offstage(),
+                  items: voltDownMenuItems,
+                  onChanged: (int value) {
+                    setState(() {
+                      powerMultiplier = value;
+                    });
+                  }),
             ),
-            RaisedButton(onPressed: () {
-              try {
-                //check if the current field is empty first
-                if (currentFieldIsEmpty) {
-                  if (powerFieldIsEmpty) {
-                    //calculate current from voltage and resistance only if power field is empty
-                    _currentController.text = (voltage / resistance).toString();
-                  } else if (resistanceFieldIsEmpty) {
-                    //calculate current from power and  voltage only
-                    _currentController.text = (power / voltage).toString();
-                  } else if (voltageFieldIsEmpty) {
-                    //calculate current from power and resistance only
-                    _currentController.text =
-                        (sqrt(power / resistance)).toString();
+            RaisedButton(
+                child: Text('data'),
+                onPressed: () {
+                  print(currentFieldIsEmpty);
+                  print(resistanceFieldIsEmpty);
+
+                  if (voltageFieldIsEmpty == false) {
+                    voltage = voltsMultiplier == 99
+                        ? double.tryParse(voltageInput) * 0.001
+                        : double.tryParse(voltageInput) * voltsMultiplier;
                   } else {
-                    buildSnackbar(context, '  INPUT TWO FIELDS ');
+                    voltage = null;
                   }
-                } else if (voltageFieldIsEmpty) {
-                  if (powerFieldIsEmpty) {
-                    _voltageController.text = (current * resistance).toString();
-                  } else if (resistanceFieldIsEmpty) {
-                    _voltageController.text = (power / current).toString();
-                  } else if (currentFieldIsEmpty) {
-                    _voltageController.text =
-                        (sqrt(power / resistance)).toString();
+                  print(voltage);
+                  if (currentFieldIsEmpty == false) {
+                    current = currentMultiplier == 99
+                        ? double.tryParse(currentInput) * 0.001
+                        : double.tryParse(currentInput) * currentMultiplier;
                   } else {
-                    buildSnackbar(context, '  INPUT TWO FIELDS ');
+                    current = null;
                   }
-                } else if (resistanceFieldIsEmpty) {
-                  if (voltageFieldIsEmpty) {
-                    _resistanceController.text =
-                        (power / (current * current)).toString();
-                  } else if (currentFieldIsEmpty) {
-                    _resistanceController.text =
-                        ((pow(voltage, 2)) / power).toString();
-                  } else if (powerFieldIsEmpty) {
-                    _resistanceController.text = (voltage / current).toString();
+                  print(current);
+                  if (resistanceFieldIsEmpty == false) {
+                    resistance = resistanceMultiplier == 99
+                        ? double.tryParse(resistanceInput) * 0.001
+                        : double.tryParse(resistanceInput) *
+                            resistanceMultiplier;
                   } else {
-                    buildSnackbar(context, '  INPUT TWO FIELDS ');
+                    resistance = null;
                   }
-                } else if (powerFieldIsEmpty) {
-                  if (currentFieldIsEmpty) {
-                    _powerController.text =
-                        ((pow(voltage, 2)) / resistance).toString();
-                  } else if (voltageFieldIsEmpty) {
-                    _powerController.text =
-                        ((pow(current, 2)) * resistance).toString();
-                  } else if (resistanceFieldIsEmpty) {
-                    _powerController.text = (voltage * current).toString();
+                  print(resistance);
+                  print(powerFieldIsEmpty);
+                  print(_powerController.text);
+                  print(powerInput);
+                  if (powerFieldIsEmpty == false) {
+                    power = powerMultiplier == 99
+                        ? double.tryParse(powerInput) * 0.01
+                        : double.tryParse(powerInput) * powerMultiplier;
                   } else {
-                    buildSnackbar(context, '  INPUT TWO FIELDS ');
+                    power = null;
                   }
-                } else {
-                  buildSnackbar(context, '  INVALID INPUT / INPUTS ');
-                }
-              } catch (e) {
-                buildSnackbar(context, '  INVALID INPUT / INPUTS ');
-              }
-            })
+                  print(power);
+                  print('+++++++++++++');
+                  print(voltageInput);
+                  print(resistanceInput);
+                  print(currentInput);
+                  print(powerInput);
+                  print('+++++++++++++');
+
+
+                  print(voltage);
+                  print(current);
+                  print(resistance);
+                  print(power);
+
+                  try {
+                    print(voltage);
+                    print(current);
+                    print(resistance);
+                    //check if the current field is empty first
+                    if (currentFieldIsEmpty) {
+                     
+                      if (powerFieldIsEmpty) {
+                        //calculate current from voltage and resistance 
+                        //cal
+                        currentInput = (voltage / resistance).toString();
+                        powerInput =
+                            ((pow(voltage, 2)) / resistance).toString();
+                      } else if (resistanceFieldIsEmpty) {
+                        //calculate current from power and  voltage only
+                        currentInput = (power / voltage).toString();
+                        resistanceInput =
+                            ((pow(voltage, 2)) / power).toString();
+                      } else if (voltageFieldIsEmpty) {
+                        //calculate current from power and resistance only
+                        currentInput = (sqrt(power / resistance)).toString();
+                        voltageInput = (current * resistance).toString();
+                      } else {
+                        buildSnackbar(context, '  INPUT TWO FIELDS ');
+                      }
+                    } else if (voltageFieldIsEmpty) {
+                      voltageInput = (current * resistance).toString();
+                      if (powerFieldIsEmpty) {
+                        voltageInput = (current * resistance).toString();
+                        powerInput =
+                            ((pow(current, 2)) * resistance).toString();
+                      } else if (resistanceFieldIsEmpty) {
+                        voltageInput = (power / current).toString();
+                        resistanceInput =
+                            (power / (current * current)).toString();
+                      } else if (currentFieldIsEmpty) {
+                        voltageInput = (sqrt(power / resistance)).toString();
+                        currentInput = (sqrt(power / resistance)).toString();
+                      } else {
+                        buildSnackbar(context, '  INPUT TWO FIELDS ');
+                      }
+                    } else if (resistanceFieldIsEmpty) {
+                      resistanceInput =
+                          (power / (current * current)).toString();
+                      if (voltageFieldIsEmpty) {
+                        resistanceInput =
+                            (power / (current * current)).toString();
+                        voltageInput = (power / current).toString();
+                      } else if (currentFieldIsEmpty) {
+                        resistanceInput =
+                            ((pow(voltage, 2)) / power).toString();
+                        currentInput = _currentController.text =
+                            (power / voltage).toString();
+                      } else if (powerFieldIsEmpty) {
+                        resistanceInput = (voltage / current).toString();
+                        powerInput = (voltage * current).toString();
+                      } else {
+                        buildSnackbar(context, '  INPUT TWO FIELDS ');
+                      }
+                    } else if (powerFieldIsEmpty) {
+                      powerInput = ((pow(voltage, 2)) / resistance).toString();
+                      if (currentFieldIsEmpty) {
+                        powerInput =
+                            ((pow(voltage, 2)) / resistance).toString();
+
+                        currentInput = _currentController.text =
+                            (voltage / resistance).toString();
+                      } else if (voltageFieldIsEmpty) {
+                        powerInput =
+                            ((pow(current, 2)) * resistance).toString();
+                        voltageInput = (current * resistance).toString();
+                      } else if (resistanceFieldIsEmpty) {
+                        powerInput = (voltage * current).toString();
+                        resistanceInput = (voltage / current).toString();
+                      } else {
+                        buildSnackbar(context, '  INPUT TWO FIELDS ');
+                      }
+                    } else {
+                      buildSnackbar(context, '  INVALID INPUT / INPUTS ');
+                    }
+
+                    _voltageController.text = voltageInput;
+                    _currentController.text = currentInput;
+                    _resistanceController.text = resistanceInput;
+                    _powerController.text = powerInput;
+                  } catch (e) {
+                    buildSnackbar(context, '  INVALID INPUT / INPUTS ');
+                  }
+                })
           ],
         ),
       ),
