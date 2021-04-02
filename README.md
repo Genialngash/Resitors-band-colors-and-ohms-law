@@ -1,6 +1,10 @@
 # resistohms
+ITS ALL ABOUT RESISTANCE AND OHMS LAW
 
-resistor color coding and ohms law calculator.
+-resistor color coding calculator.
+-ohms law calculator
+-smd resistance calculator (with EIA-96)
+
 
 ## Getting Started
 
