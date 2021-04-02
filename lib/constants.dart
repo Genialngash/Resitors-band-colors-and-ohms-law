@@ -90,6 +90,16 @@ void buildSnackbar(BuildContext context, String message) {
   ));
 }
 
+RaisedButton buildRaisedButton({Function onPressed}) {
+  return RaisedButton(
+    onPressed: onPressed,
+    color: Color(0xffA8AF9C),
+    splashColor: Color(0xffB7D874),
+    animationDuration: Duration(seconds: 1),
+    child:Text('CALCULATE'),
+  );
+}
+
 TextStyle textStyling({double fontSize}) {
   return TextStyle(
     color: Color(0xffD9D9E3),
@@ -99,14 +109,13 @@ TextStyle textStyling({double fontSize}) {
 }
 
 Container buildSmdEndContainer() {
-    return Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey,
-                    boxShadow: [BoxShadow(blurRadius: 4)]),
-                height: 135,
-                width: 30,
-              );
-  }
+  return Container(
+    decoration: BoxDecoration(
+        color: Colors.grey, boxShadow: [BoxShadow(blurRadius: 4)]),
+    height: 135,
+    width: 30,
+  );
+}
 
 // CupertinoPicker iOSPicker() {
 //     List<Text> pickerItems = [Text('3'), Text('4'), Text('5'), Text('6')];
