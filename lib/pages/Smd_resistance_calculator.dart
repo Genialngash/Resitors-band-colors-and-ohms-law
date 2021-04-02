@@ -87,9 +87,9 @@ class _SmdResistanceCalculatorState extends State<SmdResistanceCalculator> {
                             userInput = input;
                           });
                         },
-                        onEditingComplete: () {
-                          _controller.clear();
-                        },
+                        // onEditingComplete: () {
+                        //   _controller.clear();
+                        // },
                       ),
                     )),
               buildSmdEndContainer(),
@@ -99,17 +99,14 @@ class _SmdResistanceCalculatorState extends State<SmdResistanceCalculator> {
               output ?? '0.5',
               style: textStyling(fontSize: 30),
             ),
-            RaisedButton(
-              color: Color(0xffA8AF9C),
-              splashColor: Color(0xffB7D874),
-              
-             animationDuration: Duration(seconds: 1),
-              child:Text('CALCULATE'),
+            buildRaisedButton(
                 onPressed: () {
+
+                  
                   //check if the user has input more than one alphabet
                   if (userInput.lastIndexOf(RegExp(r'[A-Z]')) >
                       userInput.lastIndexOf(RegExp(r'[A-Z]'))) {
-                    print('error');
+                    
 
                     finalAnswer = errorMessage;
                   } else if ((userInput.length == 3 || userInput.length == 4) &&
@@ -182,7 +179,7 @@ class _SmdResistanceCalculatorState extends State<SmdResistanceCalculator> {
                         ''); // if answer is numeric ,split it to make a List
 
                     try {
-                      print(ans);
+                     
                       // Join the first 2/3(if its 3/4 digit code resistor )
                       // power the last digit by 10
                       var answer = userInput.length == 3
@@ -200,7 +197,7 @@ class _SmdResistanceCalculatorState extends State<SmdResistanceCalculator> {
                     output = finalAnswer;
                   });
                 }, 
-            )
+            ),
           ],
         ),
       ),
