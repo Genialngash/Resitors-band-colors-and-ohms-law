@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 import 'package:resistohms/color_picker.dart';
-import 'package:provider/provider.dart';
-import 'dart:math';
+
+import 'package:resistohms/helper/sharedPreferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'constants.dart';
 import 'package:color_convert/color_convert.dart';
 
@@ -24,15 +26,11 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   var finalAnswer = '462.0 ohms +/-1% Tolerance';
   var answer;
 
-  Color testBandColor1 = Colors.orange;
-  Color testBandColor2 = Colors.yellow;
-  Color testBandColor3 = Colors.green;
-  Color testBandColor4 = Colors.blue;
-  Color testBandColor5 = Color(0xffEE82EE);
-  Color testBandColor6 = Colors.grey;
-  Color testBandColor7 = Colors.white;
-  Color testBandColor8 = Color(0xffFFD700);
-  Color testBandColor9 = Color(0xffC0C0C0);
+  //check the settings of the color picker in shared preferences
+  // Load the settings on init state
+  bool showCircularColorPicker= false ;
+
+  bool showLinearcolorPicker= true;
 
   bool selected1 = false;
   bool selected2 = false;
@@ -58,7 +56,15 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
     _animation = CurvedAnimation(
         parent: _animationController, curve: Curves.easeInOutBack);
     _animationController.repeat(reverse: true);
-   // calculateFinalAnswer();
+    // calculateFinalAnswer();
+
+    //set the settings from shared preferences
+    // show the color picker needed from the settings
+   getColoPickerSetttings();
+
+    print(showCircularColorPicker);
+    print(showLinearcolorPicker);
+
     super.initState();
   }
 
@@ -66,6 +72,19 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   void dispose() {
     _animationController.dispose();
     super.dispose();
+  }
+
+  Future<void> getColoPickerSetttings() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    bool circularColorPicker = preferences.getBool('circular') ?? false;
+    bool linearcolorPicker = preferences.getBool('linear') ?? true
+    setState(() {
+      showLinearcolorPicker = linearcolorPicker;
+    });
+    setState(() {
+      showCircularColorPicker = circularColorPicker;
+    });
   }
 
 // VALUE[0]  MULTIPLIER[1] TOLERANCE[2] TEMPERATURE CO-EFFICIENT[3]
@@ -225,12 +244,35 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
           padding: EdgeInsets.all(20),
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Row(
+                  children: [
+                    Switch(
+                        value: showLinearcolorPicker,
+                        onChanged: (bool value) async {
+                          setState(() {
+                            showLinearcolorPicker = value;
+                          });
+                          SharedPreferences preferences =
+                              await SharedPreferences.getInstance();
+                          preferences.setBool('linear', value);
+                        }),
+                    Switch(
+                        value: showCircularColorPicker,
+                        onChanged: (bool value) async {
+                          setState(() {
+                            showCircularColorPicker = value;
+                          });
+                          SharedPreferences preferences =
+                              await SharedPreferences.getInstance();
+                          preferences.setBool('circular', value);
+                        }),
+                  ],
+                ),
                 androidDropdown(
                   totalBands: totalBands,
                   onChange: (int newValue) {
-                    
                     setState(() {
                       totalBands = newValue;
                     });
@@ -239,10 +281,8 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                 ),
                 FittedBox(
                   fit: BoxFit.fitWidth,
-                 
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    
                     children: [
                       kresistorEndWire(2),
                       Stack(
@@ -393,33 +433,40 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                     ],
                   ),
                 ),
-                ColorPicker(
-                  width: screenWidth - 40,
-                  onColorChanged: (Color color) async {
-                    await bandColorChange(color);
-                    calculateFinalAnswer();
-                  },
-                  onSubmitColorName: (colorNameTyped) {
-                    changeBandColorFromTextFieldInput(colorNameTyped, context);
-                    calculateFinalAnswer();
-                  },
-                ),
-                CircleColorPicker(
-                    strokeWidth: 5,
-                    onChanged: (Color color) {
-                      bandColorChange(color);
-                      calculateFinalAnswer();
-                    },
-                    colorCodeBuilder: (contex, color) {
-                      return buildDialog(
-                          controller: _controller,
-                          color: color,
-                          onSubmit: (colorNameTyped) {
-                            changeBandColorFromTextFieldInput(
-                                colorNameTyped, context);
-                            calculateFinalAnswer();
-                          });
-                    }),
+                //check the settings if the colorPicker should be shown first
+                showLinearcolorPicker == true
+                    ? ColorPicker(
+                        width: screenWidth - 40,
+                        onColorChanged: (Color color) async {
+                          await bandColorChange(color);
+                          calculateFinalAnswer();
+                        },
+                        onSubmitColorName: (colorNameTyped) {
+                          changeBandColorFromTextFieldInput(
+                              colorNameTyped, context);
+                          calculateFinalAnswer();
+                        },
+                      )
+                    : Offstage(),
+                //check if the color picker should be shown from shared preference
+                showCircularColorPicker == true
+                    ? CircleColorPicker(
+                        strokeWidth: 5,
+                        onChanged: (Color color) {
+                          bandColorChange(color);
+                          calculateFinalAnswer();
+                        },
+                        colorCodeBuilder: (contex, color) {
+                          return buildDialog(
+                              controller: _controller,
+                              color: color,
+                              onSubmit: (colorNameTyped) {
+                                changeBandColorFromTextFieldInput(
+                                    colorNameTyped, context);
+                                calculateFinalAnswer();
+                              });
+                        })
+                    : Offstage(),
                 Text(
                   finalAnswer.toString(),
                   style: textStyling(fontSize: 24),
