@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 import 'package:resistohms/color_picker.dart';
 
-import 'package:resistohms/helper/sharedPreferences.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';

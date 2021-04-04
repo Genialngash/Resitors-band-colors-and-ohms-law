@@ -1,20 +1,19 @@
-import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
+
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
-import 'package:resistohms/color_picker.dart';
-import 'package:resistohms/custom_icons/smd_resistor_icons.dart';
-import 'package:resistohms/helper/sharedPreferences.dart';
+
+
 import 'package:resistohms/pages/Ohms_Law_calculator.dart';
 import 'package:resistohms/pages/Smd_resistance_calculator.dart';
 import 'package:resistohms/pages/rating_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'constants.dart';
 import 'color_code_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-void main() async {
+void main()  {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPref().init();
+ 
   runApp(MyApp());
 }
 
