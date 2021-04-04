@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:resistohms/constants.dart';
+
 
 typedef onChange = void Function(Color color);
 
@@ -33,6 +33,7 @@ class _ColorPickerState extends State<ColorPicker> {
 
   double _colorSliderPosition = 0;
   Color currentColor;
+  
 
   _colorChangeHandler(double position) {
     //handle out of bounds positions
@@ -86,13 +87,17 @@ class _ColorPickerState extends State<ColorPicker> {
 
   @override
   void initState() {
-    super.initState();
     currentColor = _calculateSelecteColor(_colorSliderPosition);
+
+    
+    super.initState();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
+    
     return Column(
       children: <Widget>[
         Center(
@@ -128,10 +133,7 @@ class _ColorPickerState extends State<ColorPicker> {
         SizedBox(
           height: 35,
         ),
-        buildDialog(
-            controller: controller,
-            color: currentColor,
-            onSubmit: widget.onSubmitColorName)
+       
       ],
     );
   }
