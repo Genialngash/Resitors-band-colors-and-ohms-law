@@ -31,7 +31,7 @@ FadeTransition buildFadeTransition(Color bandColor, Animation<double> opacity) {
   return FadeTransition(opacity: opacity, child: buildBandContainer(bandColor));
 }
 
-Dialog buildDialog(
+Dialog buildTextDialog(
     {TextEditingController controller, Color color, Function onSubmit}) {
   return Dialog(
     elevation: 3.0,
@@ -75,6 +75,7 @@ DropdownButton<int> androidDropdown({int totalBands, Function onChange}) {
   ];
 
   return DropdownButton<int>(
+    dropdownColor: Color(0xff194644),
     iconEnabledColor: Colors.cyan,
     style: textStyling(),
     value: totalBands,
@@ -93,10 +94,10 @@ void buildSnackbar(BuildContext context, String message) {
 RaisedButton buildRaisedButton({Function onPressed}) {
   return RaisedButton(
     onPressed: onPressed,
-    color: Color(0xffA8AF9C),
-    splashColor: Color(0xffB7D874),
+    color: Color(0xff194649),
+    splashColor: Colors.cyan,
     animationDuration: Duration(seconds: 1),
-    child:Text('CALCULATE'),
+    child:Text('CALCULATE',style: textStyling(),),
   );
 }
 
@@ -116,6 +117,42 @@ Container buildSmdEndContainer() {
     width: 30,
   );
 }
+
+
+ListTile  buildOhmsLawListile({TextEditingController controller,String hintText,
+Function onChangeTextField,List<DropdownMenuItem<num>> dropdownMenuItems,
+Function onChangeDropDown, var dropDownValue}){
+
+  return ListTile(
+              title: TextField(
+                cursorWidth: 3.5,
+                keyboardType: TextInputType.numberWithOptions(),
+                controller: controller,
+                maxLength: 14,
+                maxLines: null,
+                cursorColor: Color(0xff98DEDA),
+                style: textStyling(fontSize: 30),
+                textAlign: TextAlign.start,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  hintText: hintText,
+                  counter: Offstage(),
+                ),
+                onChanged: onChangeTextField,
+              ),
+              trailing: DropdownButton(
+                dropdownColor: Color(0xff194644),
+                 iconEnabledColor: Colors.cyan,
+                items: dropdownMenuItems,
+                style: textStyling(),
+                underline: Offstage(),
+                onChanged: onChangeDropDown,
+
+                value: dropDownValue,
+              ),
+            );
+}
+
 
 // CupertinoPicker iOSPicker() {
 //     List<Text> pickerItems = [Text('3'), Text('4'), Text('5'), Text('6')];
