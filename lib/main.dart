@@ -2,14 +2,19 @@ import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:resistohms/color_picker.dart';
 import 'package:resistohms/custom_icons/smd_resistor_icons.dart';
+import 'package:resistohms/helper/sharedPreferences.dart';
 import 'package:resistohms/pages/Ohms_Law_calculator.dart';
 import 'package:resistohms/pages/Smd_resistance_calculator.dart';
+import 'package:resistohms/pages/rating_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
 import 'color_code_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPref().init();
   runApp(MyApp());
 }
 
@@ -42,55 +47,17 @@ class _HomePageState extends State<HomePage> {
   int _selectedItemPosition = 0;
   ShapeBorder bottomBarShape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(15)));
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
+    
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text('OHM\'S RESISTANCE'),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.settings_applications,
-                size: 30,
-              ),
-              onPressed: () async {
-                showDialog(
-                  builder: (_) => Dialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      
-                      children: [
-                       // Text('Select background Color'),
-                        CircleColorPicker(),
-                        // RaisedButton(
-                        //   child: Text('Change Background Color'),
-                        //   onPressed: () {},
-                        // ),
-                        CheckboxListTile(
-                          value: false,
-                          onChanged: (bool) {},
-                          title: Text('data'),
-                          subtitle: Text('color'),
-                        ),
-                        CheckboxListTile(
-                          value: false,
-                          onChanged: (bool) {},
-                          title: Text('data'),
-                          subtitle: Text('color'),
-                        )
-                      ],
-                    ),
-                  ),
-                  context: context,
-                );
-              },
-            ),
-          ],
+          
+          
         ),
         backgroundColor: Color(0xff305A3F),
         body: IndexedStack(
@@ -157,10 +124,10 @@ class TabNavigationItem {
         TabNavigationItem(
           page: SmdResistanceCalculator(),
           icon: Icon(smd_icon),
-          label: 'SMD resistor',
+          label: 'SMD',
         ),
         TabNavigationItem(
-          page: Text('data'),
+          page: RatingPage(),
           icon: Icon(Icons.rate_review),
           label: 'Rate 5 stars',
         ),
