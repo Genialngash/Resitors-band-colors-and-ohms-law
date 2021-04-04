@@ -22,15 +22,16 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   Color bandColor4 = Color.fromARGB(255, 0, 0, 0);
   Color bandColor5 = Color.fromARGB(255, 0, 128, 0);
   Color bandColor6 = Color.fromARGB(255, 165, 42, 42);
+  Color linearColorPickerColor;
+  Color activeColor = Color(0xff39B6B6);
+  Color inactiveThumbColor = Colors.white70;
   int totalBands = 5;
   var finalAnswer = '462.0 ohms +/-1% Tolerance';
   var answer;
 
-  //check the settings of the color picker in shared preferences
-  // Load the settings on init state
-  bool showCircularColorPicker= false ;
-
-  bool showLinearcolorPicker= true;
+  bool showCircularColorPicker = false;
+  bool showLinearcolorPicker = true;
+  bool showTextColorInput = true;
 
   bool selected1 = false;
   bool selected2 = false;
@@ -60,10 +61,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
 
     //set the settings from shared preferences
     // show the color picker needed from the settings
-   getColoPickerSetttings();
-
-    print(showCircularColorPicker);
-    print(showLinearcolorPicker);
+    getColoPickerSetttings();
 
     super.initState();
   }
@@ -74,16 +72,18 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
     super.dispose();
   }
 
+  //check the settings of the color picker in shared preferences
+  // Load the settings on init state
   Future<void> getColoPickerSetttings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     bool circularColorPicker = preferences.getBool('circular') ?? false;
-    bool linearcolorPicker = preferences.getBool('linear') ?? true
+    bool linearcolorPicker = preferences.getBool('linear') ?? true;
+    bool textColorInput = preferences.getBool('text') ?? true;
     setState(() {
       showLinearcolorPicker = linearcolorPicker;
-    });
-    setState(() {
       showCircularColorPicker = circularColorPicker;
+      showTextColorInput = textColorInput;
     });
   }
 
@@ -196,6 +196,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    TextEditingController controller = TextEditingController();
 
     void changeBandColorFromTextFieldInput(
         String colorNameTyped, BuildContext context) {
@@ -246,9 +247,14 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Text('Select color Picker '),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    Text('Linear '),
                     Switch(
+                        activeColor: activeColor,
+                        inactiveThumbColor: inactiveThumbColor,
                         value: showLinearcolorPicker,
                         onChanged: (bool value) async {
                           setState(() {
@@ -258,7 +264,23 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                               await SharedPreferences.getInstance();
                           preferences.setBool('linear', value);
                         }),
+                    Text('Text '),
                     Switch(
+                        activeColor: activeColor,
+                        inactiveThumbColor: inactiveThumbColor,
+                        value: showTextColorInput,
+                        onChanged: (bool value) async {
+                          setState(() {
+                            showTextColorInput = value;
+                          });
+                          SharedPreferences preferences =
+                              await SharedPreferences.getInstance();
+                          preferences.setBool('text', value);
+                        }),
+                    Text('Circular'),
+                    Switch(
+                        activeColor: activeColor,
+                        inactiveThumbColor: inactiveThumbColor,
                         value: showCircularColorPicker,
                         onChanged: (bool value) async {
                           setState(() {
@@ -272,7 +294,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                 ),
                 androidDropdown(
                   totalBands: totalBands,
-                  onChange: (int newValue) {
+                  onChange: (num newValue) {
                     setState(() {
                       totalBands = newValue;
                     });
@@ -436,12 +458,25 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                 //check the settings if the colorPicker should be shown first
                 showLinearcolorPicker == true
                     ? ColorPicker(
-                        width: screenWidth - 40,
+                        width: screenWidth - screenWidth / 6,
                         onColorChanged: (Color color) async {
+                          
                           await bandColorChange(color);
                           calculateFinalAnswer();
+                          setState(() {
+                            linearColorPickerColor = color;
+                          });
                         },
-                        onSubmitColorName: (colorNameTyped) {
+                      )
+                    : Offstage(),
+                SizedBox(
+                  height: 20,
+                ),
+                showTextColorInput == true
+                    ? buildTextDialog(
+                        controller: controller,
+                        color: linearColorPickerColor ?? Color(0xffB23C3E),
+                        onSubmit: (colorNameTyped) {
                           changeBandColorFromTextFieldInput(
                               colorNameTyped, context);
                           calculateFinalAnswer();
@@ -457,7 +492,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                           calculateFinalAnswer();
                         },
                         colorCodeBuilder: (contex, color) {
-                          return buildDialog(
+                          return buildTextDialog(
                               controller: _controller,
                               color: color,
                               onSubmit: (colorNameTyped) {
@@ -469,9 +504,8 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                     : Offstage(),
                 Text(
                   finalAnswer.toString(),
-                  style: textStyling(fontSize: 24),
+                  style: textStyling(fontSize: 22),
                 ),
-                Text(finalAnswer.toString()),
               ],
             ),
           ),
@@ -655,3 +689,5 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
     });
   }
 }
+
+class switchButton {}
