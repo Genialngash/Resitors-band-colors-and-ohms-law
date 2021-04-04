@@ -30,7 +30,7 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
     ),
     DropdownMenuItem(
       child: Text('milliVolts'),
-      value: 0.01,
+      value: 0.001,
     ),
   ];
 
@@ -49,7 +49,7 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
     ),
     DropdownMenuItem(
       child: Text('milliAmps'),
-      value: 0.01,
+      value: 0.001,
     ),
   ];
 
@@ -68,7 +68,7 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
     ),
     DropdownMenuItem(
       child: Text('milliOhms'),
-      value: 0.01,
+      value: 0.001,
     ),
   ];
 
@@ -87,7 +87,7 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
     ),
     DropdownMenuItem(
       child: Text('milliWatts'),
-      value: 0.01,
+      value: 0.001,
     ),
   ];
 
@@ -303,145 +303,64 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ListTile(
-              title: TextField(
-                cursorWidth: 3.5,
-                keyboardType: TextInputType.numberWithOptions(),
+            buildOhmsLawListile(
                 controller: _voltageController,
-                maxLength: 14,
-                maxLines: null,
-                cursorColor: Color(0xff98DEDA),
-                style: textStyling(fontSize: 30),
-                textAlign: TextAlign.start,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  hintText: voltageHintText,
-                  counter: Offstage(),
-                ),
-                onChanged: (String input) {
+                hintText: voltageHintText,
+                onChangeTextField: (String input) {
                   setState(() {
                     voltageInput = input;
                   });
                 },
-              ),
-              trailing: DropdownButton(
-                dropdownColor: Color(0xffC0C3DC),
-                items: voltDownMenuItems,
-                underline: Offstage(),
-                onChanged: (num value) {
+                dropdownMenuItems: voltDownMenuItems,
+                onChangeDropDown: (var value) {
                   setState(() {
                     voltsMultiplier =
                         value; // change the value to its respective name of the prefix standard(mega,kilo)
                   });
-
-                  print(voltage);
                 },
-                value: voltsMultiplier,
-              ),
-            ),
-            ListTile(
-              title: TextField(
-                cursorWidth: 4.0,
-                keyboardType: TextInputType.numberWithOptions(),
+                dropDownValue: voltsMultiplier),
+            buildOhmsLawListile(
                 controller: _currentController,
-                maxLength: 14,
-                maxLines: null,
-                cursorColor: Color(0xff98DEDA),
-                style: textStyling(fontSize: 30),
-                textAlign: TextAlign.start,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  hintText: currentHintText,
-                  counter: Offstage(),
-                ),
-                onChanged: (String input) {
+                hintText: currentHintText,
+                onChangeTextField: (String input) {
                   setState(() {
                     currentInput = input;
                   });
                 },
-                onSubmitted: (String c) {
-                  calculateAnswer();
-                },
-              ),
-              trailing: DropdownButton(
-                  items: currentDownMenuItems,
-                  value: currentMultiplier,
-                  underline: Offstage(),
-                  onChanged: (num value) {
-                    setState(() {
-                      currentMultiplier = value;
-                    });
-
-                    print(current);
-                  }),
-            ),
-            ListTile(
-              title: TextField(
-                cursorWidth: 4.0,
-
-                keyboardType: TextInputType.numberWithOptions(),
-                controller: _resistanceController,
-                maxLength: 14,
-                maxLines: null,
-                cursorColor: Color(0xff98DEDA),
-                style: textStyling(fontSize: 30),
-                textAlign: TextAlign.start,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  hintText: resistanceHintText,
-                  counter: Offstage(),
-                ),
-                onChanged: (String input) {
+                dropdownMenuItems: currentDownMenuItems,
+                onChangeDropDown: (var value) {
                   setState(() {
-                    //  _resistanceController.text = input;
+                    currentMultiplier = value;
+                  });
+                },
+                dropDownValue: currentMultiplier),
+            buildOhmsLawListile(
+                controller: _resistanceController,
+                hintText: resistanceHintText,
+                onChangeTextField: (String input) {
+                  setState(() {
                     resistanceInput = input;
                   });
                 },
-                // onEditingComplete: () {
-                //   _voltageController.clear();
-                // },
-              ),
-              trailing: DropdownButton(
-                  items: resistanceDownMenuItems,
-                  value: resistanceMultiplier,
-                  underline: Offstage(),
-                  onChanged: (num value) {
-                    setState(() {
-                      resistanceMultiplier = value;
-                    });
-                  }),
-            ),
-            ListTile(
-              title: TextField(
-                cursorWidth: 4.0,
-                keyboardType: TextInputType.numberWithOptions(),
-                controller: _powerController,
-                maxLength: 14,
-                maxLines: null,
-                cursorColor: Color(0xff98DEDA),
-                style: textStyling(fontSize: 30),
-                textAlign: TextAlign.start,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  hintText: powerHintText,
-                  counter: Offstage(),
-                ),
-                onChanged: (String input) {
+                dropdownMenuItems: resistanceDownMenuItems,
+                onChangeDropDown: (var value) {
+                  setState(() {
+                    resistanceMultiplier = value;
+                  });
+                },
+                dropDownValue: resistanceMultiplier),
+
+                buildOhmsLawListile(controller: _powerController,
+                hintText: powerHintText,onChangeTextField: (String input) {
                   setState(() {
                     powerInput = input;
                   });
-                },
-              ),
-              trailing: DropdownButton(
-                  underline: Offstage(),
-                  value: powerMultiplier,
-                  items: powerDownMenuItems,
-                  onChanged: (num value) {
+                },dropdownMenuItems: powerDownMenuItems,onChangeDropDown: (var value) {
                     setState(() {
                       powerMultiplier = value;
                     });
-                  }),
-            ),
+                  },dropDownValue: powerMultiplier) ,
+            
             SizedBox(
               height: 26,
             ),
