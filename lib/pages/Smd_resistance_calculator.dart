@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:resistohms/constants.dart';
-import 'package:color_convert/color_convert.dart';
+
 import 'dart:math';
 
 class SmdResistanceCalculator extends StatefulWidget {
@@ -57,10 +57,11 @@ class _SmdResistanceCalculatorState extends State<SmdResistanceCalculator> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          
+          Text('Supports EIA-96 system'),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              
               buildSmdEndContainer(),
               Container(
                   height: 130,
@@ -96,9 +97,15 @@ class _SmdResistanceCalculatorState extends State<SmdResistanceCalculator> {
             buildSmdEndContainer(),
             ],
           ),
+          SizedBox(
+            height: 30,
+          ),
           Text(
             output ?? '0.5',
             style: textStyling(fontSize: 30),
+          ),
+          SizedBox(
+            height: 30,
           ),
           buildRaisedButton(
               onPressed: () {

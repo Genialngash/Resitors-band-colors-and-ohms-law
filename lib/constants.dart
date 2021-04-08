@@ -91,6 +91,10 @@ void buildSnackbar(BuildContext context, String message) {
   ));
 }
 
+// ElevatedButton ele(){
+//   return ElevatedButton(onPressed: onPressed, child: child,style: ButtonStyle(),)
+// }
+
 RaisedButton buildRaisedButton({Function onPressed}) {
   return RaisedButton(
     onPressed: onPressed,

@@ -77,9 +77,9 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   Future<void> getColoPickerSetttings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    bool circularColorPicker = preferences.getBool('circular') ?? false;
-    bool linearcolorPicker = preferences.getBool('linear') ?? true;
-    bool textColorInput = preferences.getBool('text') ?? true;
+    bool circularColorPicker = preferences.getBool('circularPicker') ?? false;
+    bool linearcolorPicker = preferences.getBool('linearPicker') ?? true;
+    bool textColorInput = preferences.getBool('textPicker') ?? true;
     setState(() {
       showLinearcolorPicker = linearcolorPicker;
       showCircularColorPicker = circularColorPicker;
@@ -195,7 +195,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+   
     TextEditingController controller = TextEditingController();
 
     void changeBandColorFromTextFieldInput(
@@ -262,7 +262,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                           });
                           SharedPreferences preferences =
                               await SharedPreferences.getInstance();
-                          preferences.setBool('linear', value);
+                          preferences.setBool('linearPicker', value);
                         }),
                     Text('Text '),
                     Switch(
@@ -275,7 +275,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                           });
                           SharedPreferences preferences =
                               await SharedPreferences.getInstance();
-                          preferences.setBool('text', value);
+                          preferences.setBool('textPicker', value);
                         }),
                     Text('Circular'),
                     Switch(
@@ -288,7 +288,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                           });
                           SharedPreferences preferences =
                               await SharedPreferences.getInstance();
-                          preferences.setBool('circular', value);
+                          preferences.setBool('circularPicker', value);
                         }),
                   ],
                 ),
@@ -455,13 +455,18 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                     ],
                   ),
                 ),
+SizedBox(height: 20,),
+                Text(
+                  finalAnswer.toString(),
+                  style: textStyling(fontSize: 22),
+                ),
                 //check the settings if the colorPicker should be shown first
                 showLinearcolorPicker == true
                     ? ColorPicker(
                         width: screenWidth - screenWidth / 6,
                         onColorChanged: (Color color) async {
                           
-                          await bandColorChange(color);
+                           bandColorChange(color);
                           calculateFinalAnswer();
                           setState(() {
                             linearColorPickerColor = color;
@@ -502,10 +507,7 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
                               });
                         })
                     : Offstage(),
-                Text(
-                  finalAnswer.toString(),
-                  style: textStyling(fontSize: 22),
-                ),
+                
               ],
             ),
           ),
@@ -676,9 +678,9 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
         print(answer);
       }
 
-      print(first3bands);
-      print(answe);
-      print('++++++++++++++++++++');
+      // print(first3bands);
+      // print(answe);
+      // print('++++++++++++++++++++');
       setState(() {
         finalAnswer = answer;
       });
@@ -690,4 +692,4 @@ class _ColorCodeCalculatorState extends State<ColorCodeCalculator>
   }
 }
 
-class switchButton {}
+

@@ -1,19 +1,18 @@
 
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
-
-
 import 'package:resistohms/pages/Ohms_Law_calculator.dart';
 import 'package:resistohms/pages/Smd_resistance_calculator.dart';
-import 'package:resistohms/pages/rating_page.dart';
-
+import 'package:resistohms/pages/support_page.dart';
+import 'ad_manager.dart';
 import 'constants.dart';
 import 'color_code_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-void main()  {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
- 
+ // MobileAds.instance.initialize();
   runApp(MyApp());
 }
 
@@ -46,17 +45,22 @@ class _HomePageState extends State<HomePage> {
   int _selectedItemPosition = 0;
   ShapeBorder bottomBarShape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(15)));
+  Future<void> _initAdMob() {
+    return FirebaseAdMob.instance.initialize(appId: AdManager.appId);
+  }
+
+  @override
+  void initState() {
+    _initAdMob();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text('OHM\'S RESISTANCE'),
-          
-          
         ),
         backgroundColor: Color(0xff305A3F),
         body: IndexedStack(
@@ -128,7 +132,7 @@ class TabNavigationItem {
         TabNavigationItem(
           page: RatingPage(),
           icon: Icon(Icons.rate_review),
-          label: 'Rate 5 stars',
+          label: 'Support',
         ),
       ];
 }

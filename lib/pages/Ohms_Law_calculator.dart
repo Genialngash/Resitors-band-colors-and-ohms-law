@@ -224,66 +224,66 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
           setState(() {
             voltsMultiplier = 1000000;
           });
-          voltageInput = (volts / 1000000).toStringAsFixed(4);
+          voltageInput = (volts / 1000000).toString();
         } else if (volts > 1000) {
           setState(() {
             voltsMultiplier = 1000;
           });
-          voltageInput = (volts / 1000).toStringAsFixed(4);
+          voltageInput = (volts / 1000).toString();
         } else {
           setState(() {
             voltsMultiplier = 1;
           });
-          voltageInput = volts.toStringAsFixed(4);
+          voltageInput = volts.toString();
         }
         if (amps > 1000000) {
           setState(() {
             currentMultiplier = 1000000;
           });
-          currentInput = (amps / 1000000).toStringAsFixed(4);
+          currentInput = (amps / 1000000).toString();
         } else if (amps > 1000) {
           setState(() {
             currentMultiplier = 1000;
           });
-          currentInput = (amps / 1000).toStringAsFixed(4);
+          currentInput = (amps / 1000).toString();
         } else {
           setState(() {
             currentMultiplier = 1;
           });
-          currentInput = amps.toStringAsFixed(4);
+          currentInput = amps.toString();
         }
         if (ohms > 1000000) {
           setState(() {
             resistanceMultiplier = 1000000;
           });
-          resistanceInput = (ohms / 1000000).toStringAsFixed(4);
+          resistanceInput = (ohms / 1000000).toString();
         } else if (ohms > 1000) {
           setState(() {
             resistanceMultiplier = 1000;
           });
-          resistanceInput = (ohms / 1000).toStringAsFixed(4);
+          resistanceInput = (ohms / 1000).toString();
         } else {
           setState(() {
             resistanceMultiplier = 1;
           });
-          resistanceInput = ohms.toStringAsFixed(4);
+          resistanceInput = ohms.toString();
         }
 
         if (watts > 1000000) {
           setState(() {
             powerMultiplier = 1000000;
           });
-          powerInput = (watts / 1000000).toStringAsFixed(4);
+          powerInput = (watts / 1000000).toString();
         } else if (watts > 1000) {
           setState(() {
             powerMultiplier = 1000;
           });
-          powerInput = (watts / 1000).toStringAsFixed(4);
+          powerInput = (watts / 1000).toString();
         } else {
           setState(() {
             powerMultiplier = 1;
           });
-          powerInput = watts.toStringAsFixed(4);
+          powerInput = watts.toString();
         }
 
         _voltageController.text = voltageInput;
@@ -349,18 +349,21 @@ class _OhmsLawCalculatorState extends State<OhmsLawCalculator> {
                   });
                 },
                 dropDownValue: resistanceMultiplier),
-
-                buildOhmsLawListile(controller: _powerController,
-                hintText: powerHintText,onChangeTextField: (String input) {
+            buildOhmsLawListile(
+                controller: _powerController,
+                hintText: powerHintText,
+                onChangeTextField: (String input) {
                   setState(() {
                     powerInput = input;
                   });
-                },dropdownMenuItems: powerDownMenuItems,onChangeDropDown: (var value) {
-                    setState(() {
-                      powerMultiplier = value;
-                    });
-                  },dropDownValue: powerMultiplier) ,
-            
+                },
+                dropdownMenuItems: powerDownMenuItems,
+                onChangeDropDown: (var value) {
+                  setState(() {
+                    powerMultiplier = value;
+                  });
+                },
+                dropDownValue: powerMultiplier),
             SizedBox(
               height: 26,
             ),
