@@ -7,5 +7,20 @@ ITS ALL ABOUT RESISTANCE AND OHMS LAW
 -ohms law calculator
 -smd resistance calculator (with EIA-96)
 
+# App's description
+
+- supports 3,4,5,6 BANDS resistors,
+- calculate resistor color bands.
+- Has a simple and variety COLOR PICKERS to change the band color,
+- Simple,Polite, Speedy and self-explanatory USER INTERFACE
+- REAL TIME CALCULATION resistor color bands.
+- Determine SMD resistor value
+- supports EIA-96 system for higher precision resistor,
+- No need to register or login,
+- Ohms law calculation for (power,resistance, current and voltage)
+- small in size ,just a few MBS
+- Applicable in all Physics and engineering computation
+
+
 
 
