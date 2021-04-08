@@ -21,13 +21,9 @@ ITS ALL ABOUT RESISTANCE AND OHMS LAW
 - small in size ,just a few MBS
 - Applicable in all Physics and engineering computation
 
-![IMG_20210407_162535](https://user-images.githubusercontent.com/45265245/114018179-a3b3d780-9875-11eb-8393-8a2122a10dc3.jpg)
-![IMG_20210407_162652](https://user-images.githubusercontent.com/45265245/114018189-a4e50480-9875-11eb-8318-6f0559d04052.jpg)
-![IMG_20210407_162746](https://user-images.githubusercontent.com/45265245/114018191-a57d9b00-9875-11eb-8522-526cbe6d9b21.jpg)
-![IMG_20210407_162851](https://user-images.githubusercontent.com/45265245/114018194-a6163180-9875-11eb-80c6-78386fd0d5c1.jpg)
-![IMG_20210407_163057](https://user-images.githubusercontent.com/45265245/114018196-a6aec800-9875-11eb-8f92-fed2661ee190.jpg)
-![IMG_20210407_163205](https://user-images.githubusercontent.com/45265245/114018199-a7475e80-9875-11eb-84c0-0157442dee5f.jpg)
-![IMG_20210407_163428](https://user-images.githubusercontent.com/45265245/114018201-a7dff500-9875-11eb-8195-1f5b2d1f54af.jpg)
+
+[screenshots.zip](https://github.com/Genialngash/Resitors-band-colors-and-ohms-law/files/6278177/screenshots.zip)
+
 
 
 
