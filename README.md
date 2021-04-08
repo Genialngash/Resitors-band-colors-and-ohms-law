@@ -1,4 +1,5 @@
-![icon_512x512](https://user-images.githubusercontent.com/45265245/114017809-22f4db80-9875-11eb-90c9-3954cf476027.png)
+![icon](https://user-images.githubusercontent.com/45265245/114017902-49b31200-9875-11eb-848d-c90d1a55ea98.png)
+
 # resistohms
 ITS ALL ABOUT RESISTANCE AND OHMS LAW
 
