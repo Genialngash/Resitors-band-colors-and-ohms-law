@@ -21,9 +21,16 @@ ITS ALL ABOUT RESISTANCE AND OHMS LAW
 - small in size ,just a few MBS
 - Applicable in all Physics and engineering computation
 
+# screenshots
 
 [screenshots.zip](https://github.com/Genialngash/Resitors-band-colors-and-ohms-law/files/6278177/screenshots.zip)
 
+# apk files and app bundle
+
+[Ohms resistance-armeabi-v7a-.apk.zip](https://github.com/Genialngash/Resitors-band-colors-and-ohms-law/files/6278219/Ohms.resistance-armeabi-v7a-.apk.zip)
+[Ohms resistance-x86_64.apk.zip](https://github.com/Genialngash/Resitors-band-colors-and-ohms-law/files/6278222/Ohms.resistance-x86_64.apk.zip)
+
+[Ohms resistance -arm64.apk.zip](https://github.com/Genialngash/Resitors-band-colors-and-ohms-law/files/6278215/Ohms.resistance.-arm64.apk.zip)
 
 
 
